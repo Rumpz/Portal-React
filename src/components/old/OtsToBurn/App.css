@@ -1,0 +1,409 @@
+body {
+  background-color: #1b1c29
+}
+ul {
+  padding: 0;
+}
+li {
+  list-style: none;
+}
+
+ul.tabs {
+  display: flex;
+  justify-content: center;
+}
+ul.tabs li {
+  color: #c2c1c7;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 10px;
+}
+
+.clean {
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.container {
+  padding: 35px 75px;
+}
+
+table {
+  border-collapse: collapse;
+  background-color: #2e2f3b;
+  word-wrap: break-word;
+  width: 100%;
+}
+table tr {
+  word-wrap: break-word;
+  text-align: center;
+  overflow: hidden;
+  background-color: #2e2f3b;
+  color: #c2c1c7;
+  font-family:'Azo Sans Woso';
+  font-size: 14px;
+  font-weight: bold;
+}
+.table thead tr th {
+  background-color:#414152;
+  color:#6ca32e;
+  padding: 0 3px;
+  vertical-align: middle;
+  text-align: center;
+  border: 0;
+}
+.table tbody tr td {
+  word-wrap: break-word;
+  padding: 0px 3px;
+  border: 0;
+}
+
+
+table tbody tr,
+table tbody,
+table tbody tr th,
+table thead tr th,
+table thead tr,
+table thead {
+  border-bottom: 1px solid #313D4F ;
+}
+
+.options {
+  padding: 10px;
+  background-color: #EEE;
+  margin-bottom: 20px;
+}
+ul.options-list {
+  padding: 10px 100px;
+  display: flex;
+}
+ul.options-list li {
+  margin: 10px;
+  width: calc(100% / 2);
+
+}
+
+.btn {
+  cursor: pointer;
+  display: inline-block;
+  margin: 0 10px 0 0;
+  padding: 5px 15px;
+  font-size: 15px;
+  font-family: "Azo Sans Woso",serif;
+  line-height: 1.8;
+  appearance: none;
+  box-shadow: none;
+  border-radius: 20px;
+}
+
+.btn:focus {
+  outline: none
+}
+
+.btn-submit {
+  color: #6496c8;
+  background: transparent;
+  border: solid 2px #6496c8;
+}
+
+.btn-submit:hover {
+  border-color: #346392;
+  color: #346392;
+}
+
+.btn-submit:active {
+  border-color: #27496d;
+  color: #27496d;
+}
+
+.btn-close {
+  font-weight: bold;
+  padding: 0;
+  position: absolute;
+  right:1px;
+  top: 1px;
+  color: #fff;
+  background: transparent;
+}
+
+.btn-close:hover {
+  padding: 0;
+  position: absolute;
+  right:1px;
+  top: 1px;
+  color: #6ca32e;
+}
+
+.btn-close:active {
+  padding: 0;
+  position: absolute;
+  right:0;
+  top:0;
+  color: #fff;
+}
+
+.clean {
+  color: #fff;
+  background: transparent;
+}
+
+.clean:hover {
+  color: #6ca32e;
+}
+
+.clean:active {
+  color: #6ca32e;
+}
+
+.submit {
+  text-align: right;
+  margin:5px;
+}
+
+.left {
+  position: absolute;
+  left: 5px;
+  text-align: left;
+  margin:5px;
+}
+
+.right{
+  position: absolute;
+  right: 5px;
+  text-align: right;
+  margin:5px;
+}
+
+label {
+  font-style: 'Azo Sans Woso';
+  font-weight: bold;
+  padding: 5px;
+}
+
+.spinner{
+  position: absolute;
+  height: 100px;
+  width: 100px;
+  top: 50%;
+  left: 50%;
+  margin-left: -50px;
+  margin-top: -50px;
+  background: url(../imgs/ring.gif);
+  background-size: 100%;
+  z-index: 999;
+}
+
+.Overlay  {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1050;
+  outline: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  display: block;
+  outline: 0;
+},
+
+.modalbg {
+  position: relative;
+  width: 50%;
+  margin: 10% auto;
+  transform: translate(0,0);
+  display: block;
+  background: transparent;
+}
+
+.modalbg_after-open {
+  height: 75%;
+}
+
+.modalbg:focus {
+  outline: 0;
+}
+
+.dialog {
+  width: 90%;
+  margin: 10% auto;
+  padding: 10px;
+  position: relative;
+  background-color: #1b1c29;
+  box-shadow: 0 5px 15px rgba(0,0,0,.5);
+  border: 1px solid rgba(0,0,0,.2);
+  border-radius: 6px;
+  background-clip: padding-box;
+  display: block;
+  height: auto;
+  word-wrap: break-word;
+
+} 
+
+.close {
+  -webkit-appearance: none;
+  padding: 0;
+  cursor: pointer;
+  background: 0 0;
+  border: 0;
+  margin-top: -2px;
+  color: #BA091B;
+  opacity: 1;
+  text-shadow: 0 1px 0 #2e2f3b;
+  float: right;
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.form-control {
+  background-color: #fff;
+  border-color: #d9d9d9 #ccc #b3b3b3;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  color: #333;
+  cursor: default;
+  display: table;
+  border-spacing: 0;
+  border-collapse: separate;
+  outline: none;
+  overflow: hidden;
+  position: relative;
+  width: 90%;
+  text-indent: 15px;
+  margin: 0 3%;
+}
+
+.extra td ul {
+  display: flex;
+  justify-content: center;
+  padding: 0 10px;
+  flex-wrap: wrap;
+}
+.extra td ul li {
+  width: calc(100% * (1/3) - 30px);
+  font-weight: bold;
+  border: 1px solid steelblue;
+  border-radius: 5px;
+  margin: 10px 10px;
+  background-color: #2e2f3b;
+  background-image: linear-gradient(transparent, transparent, transparent, transparent,rgba(24, 24, 30, 0.3) ,rgba(24, 24, 30, 0.5));
+}
+
+.extra td ul li label {
+  display: block;
+  padding: 10px;
+  font-weight: bold;
+  color: steelblue;
+}
+
+.extra td ul li p {
+  margin: 10px 20px;
+  overflow:auto;
+  width: calc(100% - 40px);
+  height: 86px;
+  background-color: white;
+  color: black;
+  font-weight: normal;
+}
+
+.extra-btns-div ul {
+  display: flex;
+  justify-content: center;
+}
+
+.extra-btns {
+  display: block;
+  margin: 10px 20px;
+  border: 1px solid #EEE;
+  background-color: #2e2f3b;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.extra-btns:hover {
+  border-color: #6ca32e;
+}
+.extra {
+  background-color: #1b1c29;
+}
+
+.callHistory-body {
+  padding: 1px 0px;
+  width: 100%;
+  background-color: #2e2f3b;
+  color: white;
+  text-indent: 15px;
+}
+
+.callHistory {
+  margin: 10px 20px;
+}
+
+.callHistory-header {
+  background-color:#414152;
+  color:#6ca32e;
+  display: block;
+  width: 100%;
+  padding: 1px 0px;
+}
+
+.callHistory-header span {
+  width: 100%;
+  display: block;
+}
+.callHistory-header p {
+  margin: 0;
+  text-align: center;
+  font-weight: bold;
+  width: 100%;
+  display: block;
+}
+
+.IncModal {
+  margin: 10px 20px;
+}
+
+.IncModal-header {
+  background-color:#414152;
+  color:#6ca32e;
+  padding: 3px 0px;
+  margin: 0;
+  text-align: center;
+  font-weight: bold;
+  width: 100%;
+  display: block;
+}
+
+.IncModal-body {
+  margin: 0;
+  padding: 3px 0px;
+  width: 100%;
+  background-color: #2e2f3b;
+  color: white;
+  text-indent: 15px;
+}
+
+.obsModal {
+  margin: 10px 20px;
+}
+
+.obsModal-header {
+  background-color:#414152;
+  color:#6ca32e;
+  padding: 3px 0px;
+  margin: 0;
+  text-align: center;
+  font-weight: bold;
+  width: 100%;
+  display: block;
+}
+
+.obsModal-body {
+  margin: 0;
+  padding: 3px 0px;
+  width: 100%;
+  background-color: #2e2f3b;
+  color: white;
+  text-indent: 15px;
+}

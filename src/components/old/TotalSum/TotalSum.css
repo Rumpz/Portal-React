@@ -1,0 +1,81 @@
+body {
+  background-color: #1b1c29;
+}
+
+.container {
+  padding: 35px 75px;
+}
+
+table {
+  border: none;
+  border-collapse: collapse;
+  background-color: #2e2f3b;
+  word-wrap: break-word;
+  width: 100%;
+}
+ tr {
+  word-wrap: break-word;
+  text-align: center;
+  overflow: hidden;
+  background-color: #2e2f3b;
+  color: #c2c1c7;
+  font-family:'Azo Sans Woso';
+  font-size: 22px;
+  font-weight: bold;
+}
+th {
+  background-color:#414152;
+  color:#6ca32e;
+  padding: 0px 3px;
+}
+td {
+  word-wrap: break-word;
+  padding: 0px 3px;
+}
+
+table.table thead tr th {
+  font-size: 18px;
+}
+table.table tbody tr td {
+  border: 1px solid #313D4F ;
+}
+
+.table-2 tbody td {
+  font-size: 14px;
+}
+
+
+h1, h2, h3, h4, h5 {
+  font-style: 'Azo Sans Woso';
+  background-color: #414152;
+  color: #6ca32e;
+  text-align: center;
+}
+table.table thead tr th.th0,
+table.table thead tr th.th1,
+table.table thead tr th.th10,
+table.table tbody tr td.extra0,
+table.table tbody tr td.extra1,
+table.table tbody tr td.empty-td {
+  background-color: #1b1c29;
+  border-color: #1b1c29;
+}
+table, tbody, tr {
+  border: none;
+}
+.text-right {
+  text-align: right
+}
+
+.spinner{
+  position: absolute;
+  height: 100px;
+  width: 100px;
+  top: 50%;
+  left: 50%;
+  margin-left: -50px;
+  margin-top: -50px;
+  background: url(../imgs/ring.gif);
+  background-size: 100%;
+  z-index: 1;
+}

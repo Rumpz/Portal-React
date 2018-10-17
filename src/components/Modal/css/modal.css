@@ -1,0 +1,24 @@
+.Modal {
+  padding-top: 70px;
+  margin: 0px auto;
+  width: 50%;
+  background-color: #F5F5F3;
+  text-align: center;
+}
+
+.Overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding-top: 150px;
+}
+
+.modal-footer {
+  background-color: #CAC7C7
+}
+
+.modal-buttons {
+  padding: 2px;
+}

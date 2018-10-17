@@ -1,0 +1,6 @@
+.flex-list {
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}

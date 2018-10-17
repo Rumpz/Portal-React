@@ -1,0 +1,200 @@
+.options {
+	padding: 10px;
+	background-color: #EEE;
+  margin-bottom: 20px;
+}
+ul {
+	padding: 0;
+}
+ul.options-list {
+	padding: 10px;
+	display: flex;
+}
+ul.calls-filters {
+	background-color: #333;
+	padding: 10px;
+	display: flex;
+}
+
+li {
+	list-style: none;
+}
+ul.options-list li {
+	margin: 10px;
+	width: calc(100% / 2);
+
+}
+ul.calls-filters li {
+	cursor: pointer;
+	margin: 10px;
+	width: calc(100% / 4);
+	color: #fff;
+}
+
+.form-control {
+    background-color: #fff;
+    border-color: #d9d9d9 #ccc #b3b3b3;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    color: #333;
+    cursor: default;
+    display: table;
+    border-spacing: 0;
+    border-collapse: separate;
+    height: 36px;
+    outline: none;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    text-indent: 15px;
+}
+
+
+h1, h2, h3, h4, h5 {
+	font-style: 'Azo Sans Woso';
+	background-color: steelblue;
+	color:black;
+	text-align: center;
+}
+
+label {
+	font-style: 'Azo Sans Woso';
+	font-weight: bold;
+}
+
+.btn {
+	cursor: pointer;
+  display: inline-block;
+  margin: 0 10px 0 0;
+  padding: 5px 15px;
+  font-size: 15px;
+  font-family: "Azo Sans Woso",serif;
+  line-height: 1.8;
+  appearance: none;
+  box-shadow: none;
+  border-radius: 20px;
+}
+
+.btn:focus {
+  outline: none
+}
+
+.btn-submit {
+	color: #6496c8;
+  background: transparent;
+  border: solid 2px #6496c8;
+}
+
+.btn-submit:houver {
+	border-color: #346392;
+  color: #346392;
+}
+
+.btn-submit:active {
+	border-color: #27496d;
+  color: #27496d;
+}
+
+.submit {
+	text-align: right;
+	margin:5px;
+}
+
+.excel {
+	text-align: right;
+	margin:5px;
+}
+
+.calls-list {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
+}
+
+.class-items {
+	margin: 5px;
+	text-align: center;
+	border: 1px solid #ccc;
+	border-color: #d9d9d9 #ccc #b3b3b3;
+  border-radius: 4px;
+  opacity: 0.8;
+  max-width: 150px; 
+}
+.class-items li {
+	padding: 5px;
+}
+.Tecnico {
+  color: #a94442;
+  background-color: #f2dede;
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid #ebccd1;
+  border-radius: 4px;
+}
+
+.Backoffice {
+  color: #3c763d;
+  background-color: #dff0d8;
+  padding: 15px;
+  border: 1px solid #d6e9c6;
+  border-radius: 4px;
+}
+
+.Incumprimento {
+    color: #31708f;
+    background-color: #d9edf7;
+    padding: 15px;
+    border: 1px solid #bce8f1;
+    border-radius: 4px;
+}
+
+.errorMessage {
+    padding: 15px;
+    margin-top: 20px;
+    border: 1px solid #ebccd1;
+    border-radius: 4px;
+    color: #a94442;
+    background-color: #f2dede;
+    text-align: center;
+    display: block;
+}
+
+.text-center {
+	padding-left: 15px;
+}
+
+table {
+  border-collapse: collapse;
+  background-color: #2e2f3b;
+  word-wrap: break-word;
+  width: 100%;
+}
+ tr {
+  word-wrap: break-word;
+  text-align: center;
+  overflow: hidden;
+  background-color: #2e2f3b;
+  color: #c2c1c7;
+  font-family:'Azo Sans Woso';
+  font-size: 14px;
+  font-weight: bold;
+}
+ th {
+  background-color:#414152;
+  color:#6ca32e;
+  padding: 0px 3px;
+}
+td {
+  word-wrap: break-word;
+  padding: 0px 3px;
+}
+
+
+table tbody tr,
+table tbody,
+table tbody tr th,
+table thead tr th,
+table thead tr,
+table thead {
+  border-bottom: 1px solid #313D4F ;
+}

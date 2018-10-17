@@ -1,0 +1,16 @@
+.li-container{
+  text-align: center;
+  line-height: 1em;
+  margin: 12px;
+}
+  
+li {
+  margin-top: 10px;
+  margin-left: 10px;
+  list-style: none;
+  display: inline-flex;
+}
+
+a {
+  padding-left: 20px;
+}

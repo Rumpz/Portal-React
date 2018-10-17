@@ -1,0 +1,17 @@
+.betweenDates {
+  padding: 0;
+  display: flex;
+  justify-content: center;
+}
+.betweenDates div {
+  margin: 0 5px;
+  vertical-align: center;
+}
+label {
+  text-align: center;
+  display: block;
+  color: #565954;
+  font-family:'Azo Sans Woso';
+  font-size: 14px;
+  font-weight: bold;
+}

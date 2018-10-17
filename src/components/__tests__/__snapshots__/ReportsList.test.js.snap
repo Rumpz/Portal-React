@@ -1,0 +1,74 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders reports list correctly 1`] = `
+<div
+  className="table table-hover"
+  style={
+    Object {
+      "marginBottom": "10px",
+      "marginTop": "10px",
+    }
+  }
+>
+  <h4>
+    Filtrar por subcategoria
+  </h4>
+  <ul
+    style={
+      Object {
+        "display": "inline-flex",
+      }
+    }
+  >
+    <li>
+      <button
+        className="btn btn-default"
+        style={
+          Object {
+            "marginLeft": "12px",
+            "width": "200px",
+          }
+        }
+      >
+        KC
+      </button>
+    </li>
+    <li>
+      <button
+        className="btn btn-default"
+        style={
+          Object {
+            "marginLeft": "12px",
+            "width": "200px",
+          }
+        }
+      >
+        KC
+      </button>
+    </li>
+    <li>
+      <button
+        className="btn btn-default"
+        style={
+          Object {
+            "marginLeft": "12px",
+            "width": "200px",
+          }
+        }
+      >
+        KC
+      </button>
+    </li>
+  </ul>
+  <table>
+    <Header
+      arrValues={undefined}
+    />
+    <Body
+      actions={undefined}
+      body={undefined}
+      style={undefined}
+    />
+  </table>
+</div>
+`;

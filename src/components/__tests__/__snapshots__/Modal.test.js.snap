@@ -1,0 +1,60 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders reports list correctly 1`] = `
+<div
+  className="container"
+>
+  <Modal
+    appElement={undefined}
+    ariaHideApp={true}
+    bodyOpenClassName="ReactModal__Body--open"
+    className="Modal"
+    closeTimeoutMS={0}
+    isOpen={false}
+    overlayClassName="Overlay"
+    parentSelector={[Function]}
+    portalClassName="ReactModalPortal"
+    role="dialog"
+    shouldCloseOnEsc={true}
+    shouldCloseOnOverlayClick={true}
+    shouldFocusAfterRender={true}
+    shouldReturnFocusAfterClose={true}
+  >
+    <div
+      className="modal-body"
+    >
+      <h4>
+        Resumo do relatório
+      </h4>
+      <h4>
+        (possivelmente resumo do report em imagem ou dados em tabela)
+      </h4>
+      <ModalTable
+        header={
+          Array [
+            "testeHeader",
+          ]
+        }
+        values={
+          Array [
+            "testBody",
+          ]
+        }
+      />
+    </div>
+    <PhisicalLink
+      link="Teste"
+    />
+    <div
+      className="modal-buttons"
+    >
+      <button
+        className="btn btn-default"
+        onClick={undefined}
+      >
+        Close
+      </button>
+    </div>
+  </Modal>
+</div>
+`;
