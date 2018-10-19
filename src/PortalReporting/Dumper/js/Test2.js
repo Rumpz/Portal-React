@@ -3,10 +3,8 @@ import { Input } from '../../../components/old/Inputs/Inputs.js';
 import SelectMulti from 'react-select';
 import '../css/puts.css';
 // import 'react-select/dist/react-select.css';
-
 let InputInputs = ({inputs, action, getAsyncOptions}) => {
-  /* inputs = Object.keys(inputs).map(e => inputs[e]); */
-
+  inputs = Object.keys(inputs).map(e => inputs[e]);
   if (!inputs.length) return null;
   let inputsReady = inputs.map((e, idx) => {
     return e.isOpen
@@ -30,7 +28,8 @@ let SomeInput = ({data, action, getAsyncOptions}) => {
     return (
       <Input
         label={data.label}
-        action={action.handleText.bind(this, data)}
+        action={action.bind(null, data)}
+        value={data.value}
       />
     );
   } else if (data.type === 'select') {
@@ -38,10 +37,10 @@ let SomeInput = ({data, action, getAsyncOptions}) => {
       <div style={{width: '250px'}}>
         <label>{data.label}</label>
         <SelectMulti
-          closeMenuOnSelect={false}
-          onChange={action.handleMulti}
-          isMulti
-          options={data.combinations}
+          onChange={action.bind(null, data)}
+          value={data.value}
+          options={data.options}
+          multi
         />
       </div>);
   }
@@ -51,7 +50,7 @@ let SelectInputs = ({action, values}) => {
   let options = values.map((e, idx) => {
     return (
       <li key={idx} style={{paddingRight: '20px'}}>
-        <label style={{textAlign: 'left', color: e.isOpen ? 'steelblue' : null}}>
+        <label style={{textAlign: 'left', color: 'steelblue'}}>
           <input type='checkBox' onClick={action.bind(null, e)} checked={e.isOpen} />
           {e.label}
         </label>
@@ -67,19 +66,23 @@ let SelectInputs = ({action, values}) => {
   );
 };
 
-let SelectOutputs = ({action, toggleAll, toggleIsOn, values}) => {
-  let options = values.map((val, idx) => {
+let SelectOutputs = ({action, toggleAll, toggleIsOn, values, outputsLabel}) => {
+  let outputKeys = Object.keys(values);
+  outputKeys.sort();
+  let options = outputKeys.map((key, idx) => {
     return (
       <li key={idx} style={{paddingLeft: '20px'}}>
-        <label style={{ textAlign: 'left', color: 'steelblue' }}>
-          <input type='checkBox' onClick={action.bind(null, val)} />
-          {val}
-        </label>
+        <label style={{ textAlign: 'left', color: values[key] ? 'steelblue' : null }}>
+          <input type='checkBox' onClick={action.bind(null, key)} checked={values[key]} />
+          {outputsLabel[key]}</label>
       </li>);
   });
 
   return (
     <div>
+      <label style={{textAlign: 'center', padding: '10px 0', color: toggleIsOn ? 'steelblue' : null}}>
+        <input type='checkBox' onClick={toggleAll} checked={toggleIsOn} />
+        Todos</label>
       <ul className='flex-list' style={{flexDirection: 'column', justifyContent: 'space-evenly', height: '350px'}}>
         {options}
       </ul>

@@ -16,7 +16,9 @@ import BetweenDates from '../../../components/old/Dates/BetweenDates';
 import DateSelector from './DateSelector';
 import Columns from './Columns';
 
-import { InputInputs, SelectInputs, SelectOutputs } from './Test';
+import InputInputs from './selects/InputInputs';
+import SelectInputs from './selects/SelectInputs';
+import SelectOutputs from './selects/SelectOutputs';
 
 import { getOptions, columnsByID, exportXLS } from '../API';
 import json2xlsx from 'json2xlsx-export';
@@ -53,8 +55,8 @@ class SimpleSelect extends React.Component {
     this.state = {
       name: '',
       dbConnection: '',
-      colunasInput: [],
-      colunasOutput: [],
+      inputs: [],
+      outputs: [],
       filtrosDatas: [],
       options: [],
       searchOpt: '',
@@ -67,15 +69,21 @@ class SimpleSelect extends React.Component {
       selectedInputs: [],
       selectedOutputs: [],
       inputOutputModified: false,
+      outputsLabel: {},
       loading: false,
       searchTable: [],
-      imagem: []
+      imagem: [],
+      outputToggleAll: false
     };
 
     this.selectInput = this.selectInput.bind(this);
     this.setSelectedInputsValue = this.setSelectedInputsValue.bind(this);
     this.selectOutput = this.selectOutput.bind(this);
     this.handleOptionSelect = this.handleOptionSelect.bind(this);
+    this.toggleAllOutputs = this.toggleAllOutputs.bind(this);
+    this.changeDisplay = this.changeDisplay.bind(this);
+/*     this.handleMulti = this.handleMulti.bind(this); 
+    this.handleText = this.handleText.bind(this); */
   }
 
   componentDidMount() {
@@ -125,10 +133,14 @@ class SimpleSelect extends React.Component {
     selectedInputs.map(e => {
       if (e.isOpen) {
         if (typeof e.value !== 'string') {
-          inputs[e.label] = e.value.map(e => e.value);
-        } else inputs[e.label] = e.value;
+          console.log('e', e)
+          inputs[e.name] = e.value.map(e => e.value);
+        } else {
+          inputs[e.name] = e.value; 
+        }
       }
     });
+    
     const index = imagem ? imagem.indexOf(table) : null;
     const dataToSend = {
       dbConnection: dbConnection,
@@ -139,6 +151,7 @@ class SimpleSelect extends React.Component {
       selectedOutputs: outputs,
       selectedInputs: inputs
     };
+    return console.log('dataTosend', dataToSend)
     exportXLS(dataToSend).then(Response => {
       let exportName =
       `Extração_${dataToSend.searchTable}_${moment(dataToSend.startDate).format('YYYY-MM-DD')}_a_${dataToSend.endDate}.xlsx`;
@@ -170,15 +183,6 @@ class SimpleSelect extends React.Component {
       if (err.response.status === 404) { this.setState({ loading: false }); return alert(`Sem resultados entre datas`); }
     });
   }
-  
-  /* updateSheetRange (ws) {
-    var range = {s:{r:20000000, c:20000000},e:{r:0,c:0}};
-    Object.keys(ws).filter(function(x) { return x.charAt(0) != "!"; }).map(XLSX.utils.decode_cell).forEach(function(x) {
-      range.s.c = Math.min(range.s.c, x.c); range.s.r = Math.min(range.s.r, x.r);
-      range.e.c = Math.max(range.e.c, x.c); range.e.r = Math.max(range.e.r, x.r);
-    });
-    ws['!ref'] = XLSX.utils.encode_range(range);
-  } */
 
   downloadFile (data, name) {
     let blob = new Blob([data], {type: 'application/octet-stream'});
@@ -199,8 +203,9 @@ class SimpleSelect extends React.Component {
         dbConnection: Response.data.dbConnection,
         searchOpt: event.target.value,
         imagem: Response.data.imagem,
-        colunasInput: Response.data.colunasInput,
-        colunasOutput: Response.data.colunasOutput,
+        selectedInputs: Response.data.colunasInput,
+        selectedOutputs: Response.data.colunasOutput,
+        outputsLabel: Response.data.outputsLabel,
         fonteAvailable: Response.data.available,
         filtrosDatas: Response.data.filtrosDatas,
         searchDateType: Response.data.filtrosDatas[0],
@@ -224,49 +229,149 @@ class SimpleSelect extends React.Component {
   ****************************************INPUTS / OUPUTS **********************************************
   ******************************************************************************************************
   *****************************************************************************************************/
-  
-  selectInput (input) {
-    let { colunasInput } = this.state;
-    let index = colunasInput.indexOf(input);
-    for (let i in colunasInput) {
-      if (colunasInput[i] === input.label) index = i;
+/*   selectInput (input) {
+    let {selectedInputs} = this.state;
+    let index = 0;
+    for (let i in selectedInputs) {
+      if (selectedInputs[i].name === input.name) index = i;
     }
-    colunasInput[index].isOpen = !colunasInput[index].isOpen;
-    if (colunasInput[index].isOpen && input.type === 'select') {
-      const dataToFind = colunasInput.filter((e) => e.label === input.name);
-      colunasInput[index].options = dataToFind;
-      this.setState({ selectedInputs: dataToFind });
+    selectedInputs[index].isOpen = !selectedInputs[index].isOpen;
+
+    if (selectedInputs[index].isOpen && input.type === 'select') {
+      // let dataTofind = {name: input.name};
+      let dataTofind = selectedInputs.filter(e => e.name === input.name) 
+      for (let i in dataTofind) {
+        dataTofind = dataTofind[i].combinations;
+      }
+        selectedInputs[index].options = dataTofind;
+        this.setState({selectedInputs: selectedInputs});
     } else {
-      this.setState({selectedInputs: colunasInput, inputOutputModified: true});
+      this.setState({selectedInputs: selectedInputs, inputOutputModified: true});
     }
   }
 
   setSelectedInputsValue (input, e) {
-    let { selectedInputs } = this.state;
-    console.log('eeeeeeeeeeeeeee', e);
-    console.log('selectedInputs', selectedInputs);
-
-    const getSelected = selectedInputs.filter(e => e.isOpen);
+    let {selectedInputs} = this.state;
     let index = 0;
-   
-    for (let i in getSelected) {
-      if (getSelected[i].label === input.label) index = i;
+    for (let i in selectedInputs) {
+      if (selectedInputs[i].name === input.name) index = i;
     }
-    
-    getSelected[index].value = input.type === 'select' ? e : e.value;
-
-    this.setState({ selectedInputs: getSelected, inputOutputModified: true });
+    selectedInputs[index].value = input.type === 'select' ? e : e.target.value;
+    console.log('value', selectedInputs)
+    this.setState({selectedInputs: selectedInputs, inputOutputModified: true});
   }
 
   selectOutput (input) {
     let selectedOutputs = this.state.selectedOutputs;
     selectedOutputs[input] = !selectedOutputs[input];
-    this.setState({ selectedOutputs: selectedOutputs, inputOutputModified: true });
+    this.setState({selectedOutputs: selectedOutputs, inputOutputModified: true});
   }
+  */
+
+  selectInput (input) {
+    let {selectedInputs} = this.state;
+    let index = 0;
+    for (let i in selectedInputs) {
+      if (selectedInputs[i].name === input.name) index = i;
+    }
+    selectedInputs[index].isOpen = !selectedInputs[index].isOpen;
+
+    if (selectedInputs[index].isOpen && input.type === 'select') {
+      const dataToFind = selectedInputs.filter((e) => e.name === input.name).map(e => e.combinations);
+      console.log('dataToFind', dataToFind)
+      selectedInputs[index].options = dataToFind;
+      this.setState({selectedInputs: selectedInputs});
+    } else {
+      this.setState({selectedInputs: selectedInputs, inputOutputModified: true});
+    }
+  }
+ 
+  setSelectedInputsValue (input, e) {
+    let {selectedInputs} = this.state;
+    let index = 0;
+    for (let i in selectedInputs) {
+      if (selectedInputs[i].name === input.name) index = i;
+    }
+    selectedInputs[index].value = input.type === 'select' ? e : e.target.value;
+    this.setState({selectedInputs: selectedInputs, inputOutputModified: true});
+  }
+
+  selectOutput (input) {
+    let selectedOutputs = this.state.selectedOutputs;
+    selectedOutputs[input] = !selectedOutputs[input];
+    this.setState({selectedOutputs: selectedOutputs, inputOutputModified: true});
+  }
+
+  /* selectInput (input) {
+    let {selectedInputs} = this.state;
+    let index = 0;
+    for (let i in selectedInputs) {
+      if (selectedInputs[i].name === input.name) index = i;
+    }
+    selectedInputs[index].isOpen = !selectedInputs[index].isOpen;
+
+    if (selectedInputs[index].isOpen && input.type === 'select') {
+      const dataToFind = selectedInputs.filter((e) => e.name === input.name);
+      console.log('dataToFind', dataToFind)
+      selectedInputs[index].combinations = dataToFind;
+      this.setState({selectedInputs: selectedInputs});
+      
+    } else {
+      this.setState({selectedInputs: selectedInputs, inputOutputModified: true});
+    }
+  }
+
+  setSelectedInputsValue (input, e) {
+    let {selectedInputs} = this.state;
+    let index = 0;
+    for (let i in selectedInputs) {
+      if (selectedInputs[i].name === input.name) index = i;
+      console.log('test', selectedInputs[i].name === input.name)
+    }
+    console.log('selectedInput', selectedInputs[index].value)
+    console.log(input.type === 'select')
+    selectedInputs[index].value = input.type === 'select' ? e : e.value;
+    this.setState({selectedInputs: selectedInputs, inputOutputModified: true});
+  }
+
+  selectOutput (input) {
+    let selectedOutputs = this.state.selectedOutputs;
+    selectedOutputs[input] = !selectedOutputs[input];
+    this.setState({selectedOutputs: selectedOutputs, inputOutputModified: true});
+  } */
+
+  toggleAllOutputs (e) {
+    let value = e.target.checked;
+    let { selectedOutputs } = this.state;
+    for (let i in selectedOutputs) {
+      selectedOutputs[i] = value;
+    }
+    this.setState({selectedOutputs: selectedOutputs, outputToggleAll: value});
+  }
+  
+  getAsyncOptions (input, value) {
+    console.log(input)
+    console.log(value)
+    
+     // return { options: response.data };
+  }
+
+  /* resetInputsOutputs () {
+    this.setState({selectedInputs: inputs, selectedOutputs: outputs});
+  } */
  /*****************************************************************************************************/
  /*****************************************************************************************************/
  /*****************************************************************************************************/
  /*****************************************************************************************************/
+  
+ /* handleMulti = event => {
+    console.log('handleMulti', event)
+    this.setState({ multiInputs : event })
+  }
+
+  handleText = event => {
+    console.log('handleText', event)
+  } */
 
   changeDisplay (value) {
     this.setState({selectedDisplay: value});
@@ -277,10 +382,13 @@ class SimpleSelect extends React.Component {
     const { 
       startDate, endDate, options, 
       fonteAvailable, filtrosDatas, colunasInput,
-      colunasOutput, imagem, table,
-      selectedDisplay
+      colunasOutput, outputsLabel, imagem, 
+      table, selectedDisplay, selectedInputs,
+      outputToggleAll, selectedOutputs
     } = this.state;
-  
+/*     let { selectedInputs,
+      selectedDisplay,
+      outputToggleAll, selectedOutputs } = this.state; */
     const dateSelector = !this.state.filtrosDatas
       ?
       null
@@ -288,7 +396,7 @@ class SimpleSelect extends React.Component {
           <label>Tipo de Data</label>
           <DateSelector style={{height: '32px', borderRadius: '3px', textColor: 'red'}} action={this.handleFilters} options={!filtrosDatas ? [] : filtrosDatas}/>
         </div>;
-
+    const selectedStyle = {color: 'red', fontWeight: 'bold'};
     const tableSelect = this.state.searchOpt
       ? <TableSelect
         	renderValue={table ? table : null}
@@ -302,15 +410,6 @@ class SimpleSelect extends React.Component {
         </div>
     : null;
 
-    /* 
-    const columns = !colunasInput && !colunasOutput
-      ? null
-      : <Columns 
-          inputs={colunasInput} 
-          outputs={colunasOutput}
-          previousState={this.state}
-      />
-    */
     return (  
       <div>
         <form className={classes.root} autoComplete="off">
@@ -355,31 +454,34 @@ class SimpleSelect extends React.Component {
       {loading}
       <div className='container-fluid'>
         <ul className='flex-list'>
-          <li><a onClick={this.changeDisplay.bind(this, 'selectInputs')}>Inputs</a></li>
-          <li><a onClick={this.changeDisplay.bind(this, 'selectOutputs')}>Outputs</a></li>
+          <li><a onClick={this.changeDisplay.bind(null, 'selectInputs')} style={selectedDisplay === 'selectInputs' ? selectedStyle : null}>Inputs</a></li>
+          <li><a onClick={this.changeDisplay.bind(null, 'selectOutputs')} style={selectedDisplay === 'selectOutputs' ? selectedStyle : null}>Outputs</a></li>
         </ul>
-        <div className='kewlPanel' >
-          <InputInputs 
-            action={this.setSelectedInputsValue} 
-            inputs={this.state.colunasInput}
-
-          /> 
+        <div className='kewlPanel'>
+          <InputInputs
+            inputs={selectedInputs}
+            action={this.setSelectedInputsValue.bind(this)}
+            getAsyncOptions={this.getAsyncOptions.bind(this)}
+          />
         </div>
-        <div className='kewlPanel' >
+        <div className='kewlPanel'>
           <div style={{display: selectedDisplay === 'selectInputs' ? 'block' : 'none'}}>
-            <SelectInputs 
-              action={this.selectInput}
-              values={this.state.colunasInput}
+            <SelectInputs
+              action={this.selectInput.bind(this)}
+              values={selectedInputs}
             />
           </div>
           <div style={{display: selectedDisplay === 'selectOutputs' ? 'block' : 'none'}}>
-            <SelectOutputs 
-              action={this.selectOutput}
-              values={this.state.colunasOutput}
+            <SelectOutputs
+              outputsLabel={outputsLabel}
+              action={this.selectOutput.bind(this)}
+              toggleAll={this.toggleAllOutputs.bind(this)}
+              toggleIsOn={outputToggleAll}
+              values={selectedOutputs}
             />
           </div>
         </div>
-        </div>
+      </div>
       </div>
     );
   }
@@ -429,3 +531,32 @@ const TableSelect = ({values, action, renderValue}) => {
   );
 }
 export default withStyles(styles)(SimpleSelect);
+
+
+/* <div className='container-fluid'>
+<ul className='flex-list'>
+  <li><a onClick={this.changeDisplay.bind(this, 'selectInputs')}>Inputs</a></li>
+  <li><a onClick={this.changeDisplay.bind(this, 'selectOutputs')}>Outputs</a></li>
+</ul>
+<div className='kewlPanel' >
+  <InputInputs 
+    action={{ handleMulti: this.handleMulti , handleText: this.handleText }}
+    inputs={this.state.colunasInput}
+  /> 
+</div>
+<div className='kewlPanel' >
+  <div style={{display: selectedDisplay === 'selectInputs' ? 'block' : 'none'}}>
+    <SelectInputs 
+      action={this.selectInput}
+      values={this.state.colunasInput}
+    />
+  </div>
+  <div style={{display: selectedDisplay === 'selectOutputs' ? 'block' : 'none'}}>
+    <SelectOutputs
+      toggleAll={this.toggleAllOutputs}
+      action={this.selectOutput}
+      values={this.state.colunasOutput}
+    />
+  </div>
+</div>
+</div> */
