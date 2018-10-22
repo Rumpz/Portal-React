@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ReactSelect from './ReactSelect';
 // import custom CSS
 import '../css/columns.css';
 
@@ -96,11 +95,6 @@ export default class Columns extends Component {
             values={outputs} 
           />
         </div>
-        <ReactSelect
-          isOpen={this.state.isInputOpen}
-          action={this.handleReactSelect} 
-          inputs={this.state.inputOptions}
-        />
         <button onClick={() => {console.log(this.state)}} className='btn btn-danger'>Search & Download</button>
       </div>
     );

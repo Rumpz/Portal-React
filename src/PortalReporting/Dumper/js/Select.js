@@ -11,18 +11,19 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Loading from '../../../components/old/Loading/Loading';
+
 // Custom imports
 import BetweenDates from '../../../components/old/Dates/BetweenDates';
 import DateSelector from './DateSelector';
-import Columns from './Columns';
 
 import InputInputs from './selects/InputInputs';
 import SelectInputs from './selects/SelectInputs';
 import SelectOutputs from './selects/SelectOutputs';
 
 import { getOptions, columnsByID, exportXLS } from '../API';
-import json2xlsx from 'json2xlsx-export';
 import XLSX from 'xlsx';
+
+import '../css/select.css';
 
 const styles = theme => ({
   root: {
@@ -73,7 +74,9 @@ class SimpleSelect extends React.Component {
       loading: false,
       searchTable: [],
       imagem: [],
-      outputToggleAll: false
+      outputToggleAll: false,
+      multiVals: [],
+      validationMsg: ''
     };
 
     this.selectInput = this.selectInput.bind(this);
@@ -92,7 +95,8 @@ class SimpleSelect extends React.Component {
         options: Response.data,
         fonteAvailable: Response.data.available,
         selectedDisplay: '',
-        table: Response.data.table
+        table: Response.data.table,
+        validationMsg: ''
       });
     }).catch(err => {
       return alert(`${err}`)
@@ -129,14 +133,17 @@ class SimpleSelect extends React.Component {
     });
     outputs = outputs.filter(e => e);
 
+  
     let inputs = {};
     selectedInputs.map(e => {
       if (e.isOpen) {
         if (typeof e.value !== 'string') {
-          console.log('e', e)
-          inputs[e.name] = e.value.map(e => e.value);
+          if (e.value === null) { 
+            return this.setState({validationMsg: 'Atenção os campos em brancos serão ignorados'})
+           }
+          inputs[e.name] = e.value.map(e => e.value)    
         } else {
-          inputs[e.name] = e.value; 
+          inputs[e.name] = e.value;           
         }
       }
     });
@@ -147,11 +154,11 @@ class SimpleSelect extends React.Component {
       startDate: moment(startDate).format('YYYY-MM-DD'),
       endDate: moment(endDate).format('YYYY-MM-DD'),
       searchDateType: searchDateType,
-      searchTable: searchTable.length > 1 ? searchTable[index] : searchTable,
+      searchTable: searchTable[index] || searchTable[2],
       selectedOutputs: outputs,
       selectedInputs: inputs
     };
-    return console.log('dataTosend', dataToSend)
+    
     exportXLS(dataToSend).then(Response => {
       let exportName =
       `Extração_${dataToSend.searchTable}_${moment(dataToSend.startDate).format('YYYY-MM-DD')}_a_${dataToSend.endDate}.xlsx`;
@@ -209,7 +216,8 @@ class SimpleSelect extends React.Component {
         fonteAvailable: Response.data.available,
         filtrosDatas: Response.data.filtrosDatas,
         searchDateType: Response.data.filtrosDatas[0],
-        searchTable: Response.data.searchTables
+        searchTable: Response.data.searchTables,
+        validationMsg: ''
       });
     }).catch(err => {
       return alert(`${err}`)
@@ -229,44 +237,6 @@ class SimpleSelect extends React.Component {
   ****************************************INPUTS / OUPUTS **********************************************
   ******************************************************************************************************
   *****************************************************************************************************/
-/*   selectInput (input) {
-    let {selectedInputs} = this.state;
-    let index = 0;
-    for (let i in selectedInputs) {
-      if (selectedInputs[i].name === input.name) index = i;
-    }
-    selectedInputs[index].isOpen = !selectedInputs[index].isOpen;
-
-    if (selectedInputs[index].isOpen && input.type === 'select') {
-      // let dataTofind = {name: input.name};
-      let dataTofind = selectedInputs.filter(e => e.name === input.name) 
-      for (let i in dataTofind) {
-        dataTofind = dataTofind[i].combinations;
-      }
-        selectedInputs[index].options = dataTofind;
-        this.setState({selectedInputs: selectedInputs});
-    } else {
-      this.setState({selectedInputs: selectedInputs, inputOutputModified: true});
-    }
-  }
-
-  setSelectedInputsValue (input, e) {
-    let {selectedInputs} = this.state;
-    let index = 0;
-    for (let i in selectedInputs) {
-      if (selectedInputs[i].name === input.name) index = i;
-    }
-    selectedInputs[index].value = input.type === 'select' ? e : e.target.value;
-    console.log('value', selectedInputs)
-    this.setState({selectedInputs: selectedInputs, inputOutputModified: true});
-  }
-
-  selectOutput (input) {
-    let selectedOutputs = this.state.selectedOutputs;
-    selectedOutputs[input] = !selectedOutputs[input];
-    this.setState({selectedOutputs: selectedOutputs, inputOutputModified: true});
-  }
-  */
 
   selectInput (input) {
     let {selectedInputs} = this.state;
@@ -275,11 +245,9 @@ class SimpleSelect extends React.Component {
       if (selectedInputs[i].name === input.name) index = i;
     }
     selectedInputs[index].isOpen = !selectedInputs[index].isOpen;
-
     if (selectedInputs[index].isOpen && input.type === 'select') {
       const dataToFind = selectedInputs.filter((e) => e.name === input.name).map(e => e.combinations);
-      console.log('dataToFind', dataToFind)
-      selectedInputs[index].options = dataToFind;
+      selectedInputs[index].options = dataToFind[0];
       this.setState({selectedInputs: selectedInputs});
     } else {
       this.setState({selectedInputs: selectedInputs, inputOutputModified: true});
@@ -302,44 +270,6 @@ class SimpleSelect extends React.Component {
     this.setState({selectedOutputs: selectedOutputs, inputOutputModified: true});
   }
 
-  /* selectInput (input) {
-    let {selectedInputs} = this.state;
-    let index = 0;
-    for (let i in selectedInputs) {
-      if (selectedInputs[i].name === input.name) index = i;
-    }
-    selectedInputs[index].isOpen = !selectedInputs[index].isOpen;
-
-    if (selectedInputs[index].isOpen && input.type === 'select') {
-      const dataToFind = selectedInputs.filter((e) => e.name === input.name);
-      console.log('dataToFind', dataToFind)
-      selectedInputs[index].combinations = dataToFind;
-      this.setState({selectedInputs: selectedInputs});
-      
-    } else {
-      this.setState({selectedInputs: selectedInputs, inputOutputModified: true});
-    }
-  }
-
-  setSelectedInputsValue (input, e) {
-    let {selectedInputs} = this.state;
-    let index = 0;
-    for (let i in selectedInputs) {
-      if (selectedInputs[i].name === input.name) index = i;
-      console.log('test', selectedInputs[i].name === input.name)
-    }
-    console.log('selectedInput', selectedInputs[index].value)
-    console.log(input.type === 'select')
-    selectedInputs[index].value = input.type === 'select' ? e : e.value;
-    this.setState({selectedInputs: selectedInputs, inputOutputModified: true});
-  }
-
-  selectOutput (input) {
-    let selectedOutputs = this.state.selectedOutputs;
-    selectedOutputs[input] = !selectedOutputs[input];
-    this.setState({selectedOutputs: selectedOutputs, inputOutputModified: true});
-  } */
-
   toggleAllOutputs (e) {
     let value = e.target.checked;
     let { selectedOutputs } = this.state;
@@ -348,30 +278,11 @@ class SimpleSelect extends React.Component {
     }
     this.setState({selectedOutputs: selectedOutputs, outputToggleAll: value});
   }
-  
-  getAsyncOptions (input, value) {
-    console.log(input)
-    console.log(value)
-    
-     // return { options: response.data };
-  }
 
-  /* resetInputsOutputs () {
-    this.setState({selectedInputs: inputs, selectedOutputs: outputs});
-  } */
  /*****************************************************************************************************/
  /*****************************************************************************************************/
  /*****************************************************************************************************/
  /*****************************************************************************************************/
-  
- /* handleMulti = event => {
-    console.log('handleMulti', event)
-    this.setState({ multiInputs : event })
-  }
-
-  handleText = event => {
-    console.log('handleText', event)
-  } */
 
   changeDisplay (value) {
     this.setState({selectedDisplay: value});
@@ -386,9 +297,7 @@ class SimpleSelect extends React.Component {
       table, selectedDisplay, selectedInputs,
       outputToggleAll, selectedOutputs
     } = this.state;
-/*     let { selectedInputs,
-      selectedDisplay,
-      outputToggleAll, selectedOutputs } = this.state; */
+
     const dateSelector = !this.state.filtrosDatas
       ?
       null
@@ -460,8 +369,8 @@ class SimpleSelect extends React.Component {
         <div className='kewlPanel'>
           <InputInputs
             inputs={selectedInputs}
-            action={this.setSelectedInputsValue.bind(this)}
-            getAsyncOptions={this.getAsyncOptions.bind(this)}
+            action={this.setSelectedInputsValue}
+            validationMsg={this.state.validationMsg}
           />
         </div>
         <div className='kewlPanel'>
@@ -531,32 +440,3 @@ const TableSelect = ({values, action, renderValue}) => {
   );
 }
 export default withStyles(styles)(SimpleSelect);
-
-
-/* <div className='container-fluid'>
-<ul className='flex-list'>
-  <li><a onClick={this.changeDisplay.bind(this, 'selectInputs')}>Inputs</a></li>
-  <li><a onClick={this.changeDisplay.bind(this, 'selectOutputs')}>Outputs</a></li>
-</ul>
-<div className='kewlPanel' >
-  <InputInputs 
-    action={{ handleMulti: this.handleMulti , handleText: this.handleText }}
-    inputs={this.state.colunasInput}
-  /> 
-</div>
-<div className='kewlPanel' >
-  <div style={{display: selectedDisplay === 'selectInputs' ? 'block' : 'none'}}>
-    <SelectInputs 
-      action={this.selectInput}
-      values={this.state.colunasInput}
-    />
-  </div>
-  <div style={{display: selectedDisplay === 'selectOutputs' ? 'block' : 'none'}}>
-    <SelectOutputs
-      toggleAll={this.toggleAllOutputs}
-      action={this.selectOutput}
-      values={this.state.colunasOutput}
-    />
-  </div>
-</div>
-</div> */

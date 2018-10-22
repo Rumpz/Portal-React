@@ -1,29 +1,31 @@
 import React from 'react';
 import {Input} from '../../../../components/old/Inputs/Inputs';
-import SelectMulti from 'react-select';
+import Select from 'react-select';
+// import CreatableSelect from 'react-select/lib/Creatable';
 // import 'react-select/dist/react-select.css';
 
-let InputInputs = ({inputs, action, getAsyncOptions}) => {
+let InputInputs = ({inputs, action, validationMsg}) => {
   inputs = Object.keys(inputs).map(e => inputs[e]);
   if (!inputs.length) return null;
   let inputsReady = inputs.map((e, idx) => {
     return e.isOpen
       ? (
         <li key={idx}>
-          <SomeInput data={e} action={action} getAsyncOptions={getAsyncOptions} />
+          <SomeInput data={e} action={action} validationMsg={validationMsg} />
         </li>)
       : null;
   });
   return (
     <ul className='flex-list'>
       {inputsReady}
+      <p style={{color: 'red'}}>{validationMsg}</p>
     </ul>
   );
 };
 
 export default InputInputs;
 
-let SomeInput = ({data, action, getAsyncOptions}) => {
+let SomeInput = ({data, action, validationMsg}) => {
   if (data.type === 'text') {
     return (
       <Input
@@ -36,11 +38,10 @@ let SomeInput = ({data, action, getAsyncOptions}) => {
     return (
       <div style={{width: '250px'}}>
         <label>{data.label}</label>
-        <SelectMulti
-          onChange={action.bind(null, data)}
-          value={data.value}
+        <Select
+          onChange={action.bind(this, data)}
           options={data.options}
-          multi
+          isMulti
         />
       </div>);
   }
