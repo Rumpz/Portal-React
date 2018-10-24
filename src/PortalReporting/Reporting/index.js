@@ -6,10 +6,12 @@ import { byCategory, getReport, getByfilter } from './API';
 import ReportsList from './js/ReportsList/ReportsList';
 
 // Dynamic components imports
-import ExcelRender from '../../components/ExcelRender/ExcelRender';
-import Modal from '../../components/Modal/Modal';
-
+import Modal from './js/Modal/Modal';
 import NavBar from '../../components/NavBar/NavBar';
+
+// React-Select lib
+import Select from 'react-select';
+
 // CSS
 import './css/Reporting.css';
 
@@ -18,6 +20,10 @@ class PortalReporting extends Component {
     super(props);
     this.state = {
       title: 'Portal Reporting',
+      searchOptions: [
+        {label: 'Operação', value: 'Operação'},
+        {label: 'Gestão', value: 'Gestão'}
+      ],
       reportFK: '',
       reportUrl: '',
       subCats: [],
@@ -28,12 +34,13 @@ class PortalReporting extends Component {
     };
     this.handleRow = this.handleRow.bind(this);
     this.handleModalClose = this.handleModalClose.bind(this);
-    this.handleNavbarAction = this.handleNavbarAction.bind(this);
     this.handleReportDownload = this.handleReportDownload.bind(this);
     this.handleSubCatFilter = this.handleSubCatFilter.bind(this);
+    /* this.handleNavbarAction = this.handleNavbarAction.bind(this); */
   }
 
   componentDidMount () {
+
   }
 
   checkState () {
@@ -56,6 +63,7 @@ class PortalReporting extends Component {
     this.setState({ showModal: false });
   }
 
+/*   
   handleNavbarAction (e) {
     const vals = e.target.innerText;
     return vals === 'Operação' || vals === 'Gestão'
@@ -69,6 +77,7 @@ class PortalReporting extends Component {
       })
       : alert(`Oops Under DeV! ->Check Operação and Gestão features <-`);
   }
+*/
 
   handleTableButton () {
     console.log('click');
@@ -101,9 +110,20 @@ class PortalReporting extends Component {
     });
   }
 
+  handleSearchOptions = event => {
+    this.setState({selectedOption: event});
+    byCategory(event.value).then(Response => {
+      this.setState({
+        showReports: true,
+        data: Response.data
+      });
+    }).catch(err => {
+      alert(`${err}`);
+    })
+  }
   render () {
     const modalData = {headers: ['a', 'b', 'c'], values: [[1, 2, 3], [4, 5, 6]]};
-    const { data, showReports, showModal, reportUrl, errMsg } = this.state;
+    const { data, showReports, showModal, reportUrl, errMsg, searchOptions } = this.state;
     const reportsList = showReports
       ? <ReportsList
         header={data.header}
@@ -120,9 +140,16 @@ class PortalReporting extends Component {
 
     return (
       <div className='PortalReport'>
-        <NavBar actions={this.handleNavbarAction} />
+        <NavBar />
+        <h1>Pesquisa de Relatórios</h1>
+        <label>Selecione uma opção</label>
+        <Select
+          className='react-select'
+          options={searchOptions}
+          onChange={this.handleSearchOptions}
+          value={this.state.selectedOption}
+        />
         <div>{this.state.categories ? this.state.categories : null}</div>
-        {reportsList}
         <Modal
           reportUrl={reportUrl}
           downloadReport={this.handleReportDownload}
@@ -133,8 +160,7 @@ class PortalReporting extends Component {
           modalHeader={modalData.headers}
           modalBody={modalData}
         />
-        <ExcelRender />
-        <Button onClick={this.checkState.bind(this)}>Check DB Connection</Button>
+        {reportsList}
       </div>
     );
   }

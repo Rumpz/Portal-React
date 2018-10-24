@@ -1,0 +1,20 @@
+.main-div {
+  text-align: center;
+  margin: 0px auto;
+ background-color: linear-gradient(left top, left bottom, red, yellow);
+ 
+}
+
+.img-div1, .img-div2 {
+  margin: 0px auto;
+}
+
+.mainPage-ul, li {
+  display: inline-flex;
+  list-style: none;
+  margin: 30px 50px 30px 0;   
+}
+
+img {
+  margin-left: 20px;
+}

@@ -101,6 +101,7 @@ class SimpleSelect extends React.Component {
     }).catch(err => {
       return alert(`${err}`)
     });
+    console.log(this.state)
   }
   
   startDateSelect (e) {
@@ -127,7 +128,6 @@ class SimpleSelect extends React.Component {
       dbConnection
     } = this.state;
     
-
     let outputs = Object.keys(selectedOutputs).map(key => {
       if (selectedOutputs[key]) return key;
     });
@@ -141,8 +141,9 @@ class SimpleSelect extends React.Component {
           if (e.value === null) { 
             return this.setState({validationMsg: 'Atenção os campos em brancos serão ignorados'})
            }
-          inputs[e.name] = e.value.map(e => e.value)    
+          inputs[e.name] = e.value.map(e => e.value)
         } else {
+          if (e.value === '') { return this.setState({validationMsg: 'Atenção os campos em brancos serão ignorados'}) }
           inputs[e.name] = e.value;           
         }
       }
@@ -154,11 +155,10 @@ class SimpleSelect extends React.Component {
       startDate: moment(startDate).format('YYYY-MM-DD'),
       endDate: moment(endDate).format('YYYY-MM-DD'),
       searchDateType: searchDateType,
-      searchTable: searchTable[index] || searchTable[2],
+      searchTable: searchTable[index] || searchTable[2] || searchTable,
       selectedOutputs: outputs,
       selectedInputs: inputs
     };
-    
     exportXLS(dataToSend).then(Response => {
       let exportName =
       `Extração_${dataToSend.searchTable}_${moment(dataToSend.startDate).format('YYYY-MM-DD')}_a_${dataToSend.endDate}.xlsx`;
@@ -173,7 +173,7 @@ class SimpleSelect extends React.Component {
         return toSend;
       });
       const config = {
-        filename: 'DumperFile',
+        filename: exportName,
         sheets: [
           {
             name: 'SearchSheet',
@@ -182,7 +182,10 @@ class SimpleSelect extends React.Component {
         ]
       };
       json2xlsx(config); */
-      this.downloadFile(Response.data, exportName);
+      /* parse the data when it is received */
+        var data = new Uint8Array(Response.data);
+        var workbook = XLSX.read(data, {type:"array"});
+      this.downloadFile(workbook, exportName);
       this.setState({ loading: false });
     }).catch(err => {
       if (err.response.status === 500) { this.setState({ loading: false }); return alert(`Erro de acesso ao servidor ----> ${err}`); }
@@ -248,9 +251,9 @@ class SimpleSelect extends React.Component {
     if (selectedInputs[index].isOpen && input.type === 'select') {
       const dataToFind = selectedInputs.filter((e) => e.name === input.name).map(e => e.combinations);
       selectedInputs[index].options = dataToFind[0];
-      this.setState({selectedInputs: selectedInputs});
+      this.setState({selectedInputs: selectedInputs, validationMsg: ''});
     } else {
-      this.setState({selectedInputs: selectedInputs, inputOutputModified: true});
+      this.setState({selectedInputs: selectedInputs, validationMsg: '', inputOutputModified: true});
     }
   }
  

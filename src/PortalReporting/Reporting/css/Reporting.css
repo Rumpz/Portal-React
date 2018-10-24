@@ -1,15 +1,19 @@
 .PortalReport {
   text-align: center;
-  overflow: hidden;
 }
 
 .PortalReport-header {
   background-color: #B1C7D7;
-  height: 150px;
-  padding: 20px;
+  height: 100px;
+  padding: 120px;
   color: white;
 }
 
 .PortalReport-title {
   font-size: 1.5em;
+}
+
+.react-select {
+  width: 15%;
+  margin: 0px auto;
 }

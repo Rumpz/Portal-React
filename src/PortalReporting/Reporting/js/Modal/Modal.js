@@ -1,7 +1,7 @@
 import React from 'react';
 import ModalTable from './ModalTable';
 import ReactModal from 'react-modal';
-import pasteAndGo from '../../assets/img/pasteAndGo.png';
+import pasteAndGo from '../../../../assets/img/pasteAndGo.png';
 import './css/modal.css';
 
 const Modal = (props) => {
@@ -17,8 +17,7 @@ const Modal = (props) => {
         className='Modal'
         overlayClassName='Overlay'>
         <div className='modal-body'>
-          <h4>{props.title}</h4>
-          <h4>(possivelmente resumo do report em imagem ou dados em tabela)</h4>
+          <h4>Relatório disponivel no link abaixo indicado</h4>
           <ModalTable
             header={props.modalHeader}
             values={props.modalBody}
