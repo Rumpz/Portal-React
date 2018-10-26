@@ -5,7 +5,7 @@ let SelectOutputs = ({action, toggleAll, toggleIsOn, values, outputsLabel}) => {
   outputKeys.sort();
   let options = outputKeys.map((key, idx) => {
     return (
-      <li key={idx} style={{paddingLeft: '20px'}}>
+      <li id='outputs-list' key={idx} style={{paddingLeft: '20px'}}>
         <label style={{ textAlign: 'left', color: values[key] ? 'steelblue' : null }}>
           <input type='checkBox' onClick={action.bind(null, key)} checked={values[key]} />
           {outputsLabel[key]}</label>
@@ -17,7 +17,7 @@ let SelectOutputs = ({action, toggleAll, toggleIsOn, values, outputsLabel}) => {
       <label style={{textAlign: 'center', padding: '10px 0', color: toggleIsOn ? 'steelblue' : null}}>
         <input type='checkBox' onClick={toggleAll} checked={toggleIsOn} />
         Todos</label>
-      <ul className='flex-list' style={{flexDirection: 'column', justifyContent: 'space-evenly', height: '350px'}}>
+      <ul className='outputs-list' style={{flexDirection: 'column', justifyContent: 'space-evenly', height: '350px'}}>
         {options}
       </ul>
       <br />

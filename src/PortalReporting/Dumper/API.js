@@ -14,8 +14,7 @@ function exportXLS (data) {
   return axios({
     url: url,
     type: 'get',
-    params: data,
-    responseType: 'arraybuffer'
+    params: data
   });
 }
 

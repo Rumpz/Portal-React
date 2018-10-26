@@ -15,7 +15,7 @@ let SelectInputs = ({action, values, validationMsg}) => {
 
   return (
     <div style={{padding: '10px 0'}}>
-      <ul className='flex-list' style={{flexDirection: 'column', justifyContent: 'space-evenly', height: '125px'}}>
+      <ul id='inputs-list' style={{flexDirection: 'column', justifyContent: 'space-evenly', height: '125px'}}>
         {options}
       </ul>
     </div>

@@ -28,13 +28,11 @@ export default class Columns extends Component {
     this.handleInputs = this.handleInputs;
   }
   
-  componentDidMount() {
-    console.log('mounted', this.state)
+/*   componentDidMount() {
   }
 
   componentWillUpdate (props) {
-    console.log('update', props)
-  }
+  } */
 
   componentWillReceiveProps (props) {
     if(this.state.inputs !== props.inputs) {

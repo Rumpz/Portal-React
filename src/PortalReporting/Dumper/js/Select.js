@@ -21,8 +21,7 @@ import SelectInputs from './selects/SelectInputs';
 import SelectOutputs from './selects/SelectOutputs';
 
 import { getOptions, columnsByID, exportXLS } from '../API';
-import XLSX from 'xlsx';
-
+import fileSaver from 'file-saver';
 import '../css/select.css';
 
 const styles = theme => ({
@@ -101,7 +100,6 @@ class SimpleSelect extends React.Component {
     }).catch(err => {
       return alert(`${err}`)
     });
-    console.log(this.state)
   }
   
   startDateSelect (e) {
@@ -159,43 +157,25 @@ class SimpleSelect extends React.Component {
       selectedOutputs: outputs,
       selectedInputs: inputs
     };
+    // if (!dataToSend.selectedInputs) return alert(`Campos de multipla escolha em branco, por favor insira valores ou elimine o campo`)
     exportXLS(dataToSend).then(Response => {
       let exportName =
       `Extração_${dataToSend.searchTable}_${moment(dataToSend.startDate).format('YYYY-MM-DD')}_a_${dataToSend.endDate}.xlsx`;
-      /* const keys = Object.keys(Response.data[0]);
-      const data = Response.data.map((e) => {
-        const toSend = keys.map((key) => {
-          return {
-            value: e[key],
-            type: typeof e[key]
-          }
-        });
-        return toSend;
-      });
-      const config = {
-        filename: exportName,
-        sheets: [
-          {
-            name: 'SearchSheet',
-            data: data
-          }
-        ]
-      };
-      json2xlsx(config); */
-      /* parse the data when it is received */
-        var data = new Uint8Array(Response.data);
-        var workbook = XLSX.read(data, {type:"array"});
-      this.downloadFile(workbook, exportName);
+      return console.log('Resp', Response.data)
+      /* let file = new File(Response.data, exportName)
+      fileSaver.saveAs(file); */
+      this.downloadFile(Response.data, exportName)
       this.setState({ loading: false });
     }).catch(err => {
-      if (err.response.status === 500) { this.setState({ loading: false }); return alert(`Erro de acesso ao servidor ----> ${err}`); }
+      return console.log(err)
+      if (err.response.status === 500) { this.setState({ loading: false ,validationMsg: `Erro de acesso ao servidor ----> ${err}` }); return }
       if (err.response.status === 401) { this.setState({ loading: false }); return alert(`Sem Permissões`); }
-      if (err.response.status === 404) { this.setState({ loading: false }); return alert(`Sem resultados entre datas`); }
+      if (err.response.status === 404) { this.setState({ loading: false ,validationMsg: `Sem resultados entre datas!!!`}); return }
     });
   }
-
+  
   downloadFile (data, name) {
-    let blob = new Blob([data], {type: 'application/octet-stream'});
+   let blob = new Blob([data], {type: 'application/octet-stream'});
     let url = window.URL.createObjectURL(blob);
     let a = document.createElement('A');
     a.href = url;
@@ -364,8 +344,8 @@ class SimpleSelect extends React.Component {
         </FormControl>
       </form>
       {loading}
-      <div className='container-fluid'>
-        <ul className='flex-list'>
+      <div >
+        <ul className='container-fluid'>
           <li><a onClick={this.changeDisplay.bind(null, 'selectInputs')} style={selectedDisplay === 'selectInputs' ? selectedStyle : null}>Inputs</a></li>
           <li><a onClick={this.changeDisplay.bind(null, 'selectOutputs')} style={selectedDisplay === 'selectOutputs' ? selectedStyle : null}>Outputs</a></li>
         </ul>
@@ -383,7 +363,7 @@ class SimpleSelect extends React.Component {
               values={selectedInputs}
             />
           </div>
-          <div style={{display: selectedDisplay === 'selectOutputs' ? 'block' : 'none'}}>
+          <div style={{display: selectedDisplay === 'selectOutputs' ? 'inline-block' : 'none'}}>
             <SelectOutputs
               outputsLabel={outputsLabel}
               action={this.selectOutput.bind(this)}
