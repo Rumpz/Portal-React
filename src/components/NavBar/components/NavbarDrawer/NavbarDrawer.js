@@ -8,8 +8,6 @@ import MenuList from './components/MenuList/MenuList';
 
 import styles from './css/styles';
 
-//const listData = ['Operação', 'Gestão', 'cenas', 'isto é um array =)', 'oO é mesmo pah!!'];
-
 const NavbarDrawer = (props) => {
   return (
     <Drawer
@@ -17,12 +15,13 @@ const NavbarDrawer = (props) => {
       anchor={'left'}
       open={props.isDrawerOpen}
     >
+      <Divider />
       <div className={styles.root}>
         <IconButton onClick={props.handleDrawerClose}>
           {<ChevronLeftIcon />}
         </IconButton>
+        <Divider />
       </div>
-      <Divider />
       <MenuList list={props.list} action={props.action} />
     </Drawer>
   );

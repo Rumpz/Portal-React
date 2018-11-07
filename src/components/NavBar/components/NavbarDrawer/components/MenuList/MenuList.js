@@ -39,7 +39,6 @@ const ListElements = (props) => {
   });
   return (
     <List>
-      <ListSubheader component='div'>Pesquisar categorias</ListSubheader>
       {list}
       <Divider />
     </List>

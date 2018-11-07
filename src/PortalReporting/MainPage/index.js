@@ -36,7 +36,7 @@ export default class MainPage extends Component {
               <img style={{margin: '0px auto'}} src={reporting} />
             </div>
             <strong><p style={{color: 'red'}}>1 - Categoria</p></strong>
-            <p>Escolha de qual a categoria a pesquisar, ao selecionar são disponibilizados filtros de sub-categorias e os relatorios associados à categoria principal</p>
+            <p>Escolha de qual a categoria a pesquisar, ao selecionar são disponibilizados filtros de sub-categorias e os relatórios associados à categoria principal</p>
             <br />
 
             <strong><p style={{color: 'red'}}>2 - Sub-Categoria</p></strong>
@@ -75,7 +75,7 @@ export default class MainPage extends Component {
               <p> Inputs -> Filtros para procura de campos especificos </p>
               <strong><p>Ex: "procura por data de OT com inicio 'x' e fim 'y' onde a OT = 1-YYYY"</p></strong>
               <p> Outputs -> Filtros para extração de quais os campos a extrair </p>
-              <strong><p> Ex: "Extrai os campos Conta serviço, Comentários, NIF onde a procura por data de OT com inicio 'x' e fim 'y' onde a OT = 1-YYYY"</p></strong>
+              <strong><p> Ex: "Extrai os campos Conta Serviço, Comentários, NIF onde a procura por data de OT com inicio 'x' e fim 'y' onde a OT = 1-YYYY"</p></strong>
               <br />
             </section>
           )

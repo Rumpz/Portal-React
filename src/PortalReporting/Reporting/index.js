@@ -63,22 +63,6 @@ class PortalReporting extends Component {
     this.setState({ showModal: false });
   }
 
-/*   
-  handleNavbarAction (e) {
-    const vals = e.target.innerText;
-    return vals === 'Operação' || vals === 'Gestão'
-      ? byCategory(vals).then(Response => {
-        this.setState({
-          showReports: true,
-          data: Response.data
-        });
-      }).catch(err => {
-        alert(`${err}`);
-      })
-      : alert(`Oops Under DeV! ->Check Operação and Gestão features <-`);
-  }
-*/
-
   handleTableButton () {
     console.log('click');
   }

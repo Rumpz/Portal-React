@@ -15,13 +15,19 @@ import Loading from '../../../components/old/Loading/Loading';
 // Custom imports
 import BetweenDates from '../../../components/old/Dates/BetweenDates';
 import DateSelector from './DateSelector';
-
 import InputInputs from './selects/InputInputs';
 import SelectInputs from './selects/SelectInputs';
 import SelectOutputs from './selects/SelectOutputs';
+import { Input } from '../../../components/old/Inputs/Inputs';
+import Template from './Template/index';
 
+// Template API
+import { findOptions, newTemplate } from '../js/Template/API';
+
+// API imports
 import { getOptions, columnsByID, exportXLS } from '../API';
-import fileSaver from 'file-saver';
+
+//CSS import
 import '../css/select.css';
 
 const styles = theme => ({
@@ -73,20 +79,88 @@ class SimpleSelect extends React.Component {
       loading: false,
       searchTable: [],
       imagem: [],
-      outputToggleAll: false,
       multiVals: [],
-      validationMsg: ''
+      validationMsg: '',
+      noSearchBtn: false,
+      templateName: 'NOVO',
+      templateSaveMode: true,
+      templateSave: false,
+      newTemplate: true,
+      outputToggleAll: false,
+      search: false,
+      fonte: ''
     };
-
     this.selectInput = this.selectInput.bind(this);
     this.setSelectedInputsValue = this.setSelectedInputsValue.bind(this);
     this.selectOutput = this.selectOutput.bind(this);
     this.handleOptionSelect = this.handleOptionSelect.bind(this);
     this.toggleAllOutputs = this.toggleAllOutputs.bind(this);
     this.changeDisplay = this.changeDisplay.bind(this);
-/*     this.handleMulti = this.handleMulti.bind(this); 
-    this.handleText = this.handleText.bind(this); */
   }
+
+/***********TEMPLATES****************************************************************/
+/************************************************************************************/
+/************************************************************************************/
+
+setTemplateInputs (obj) {
+  let {selectedInputs} = this.state;
+  let tempSelectedInputs = selectedInputs;
+  for (let i in selectedInputs) {
+    let name = selectedInputs[i].name;
+    if (obj[name]) {
+      tempSelectedInputs[i].value = obj[name]
+      tempSelectedInputs[i].isOpen = true
+      tempSelectedInputs[i].options = obj[name]
+    } else {
+      tempSelectedInputs[i].isOpen = false;
+    }
+  }
+  this.setState({selectedInputs: tempSelectedInputs});
+}
+
+onTemplateSelectChange (data, name) {
+  if (!this.state.searchOpt) return alert(`Por favor escolha qual a fonte a pesquisar`)
+    if (data == -1) {
+    this.setTemplateInputs({});
+    this.toggleAllOutputs({target: {checked: false}});
+    this.setState({newTemplate: true, inputOutputModified: false, isTemplate: false});
+  } else {
+    let templateData = JSON.parse(data);
+    let dataToJSON = JSON.parse(templateData.template);
+    this.setTemplateInputs(dataToJSON.inputs);
+    this.toggleAllOutputs({target: {checked: false}});
+    dataToJSON.outputs.map(e => this.selectOutput(e));
+    this.setState({templateName: templateData.name, inputOutputModified: false, search: false, newTemplate: false});
+  }
+}
+
+onTemplateSaveChanges (callback) {
+  let {selectedInputs, selectedOutputs, templateName, templateSaveMode, newTemplate} = this.state;
+  let selectedInputsAdjusted = {};
+  selectedInputs.map(e => { if (e.isOpen) selectedInputsAdjusted[e.name] = e.value; });
+  let selectedOutputsAjusted = [];
+  Object.keys(selectedOutputs).map(key => { if (selectedOutputs[key]) selectedOutputsAjusted.push(key); });
+  let templateSting = JSON.stringify({inputs: selectedInputsAdjusted, outputs: selectedOutputsAjusted});
+  let templateToSave = {
+    name: templateName,
+    template: templateSting,
+    fonte_FK: this.state.name,
+    insert: newTemplate || !templateSaveMode
+  };
+  callback(null, templateToSave);
+}
+
+changeTemplateName (e) {
+  this.setState({templateName: e.target.value});
+}
+
+toggleTemplateSaveMode () {
+  this.setState({templateSaveMode: !this.state.templateSaveMode});
+}
+
+/************************************************************************************/
+/************************************************************************************/
+/************************************************************************************/
 
   componentDidMount() {
     getOptions().then(Response => {
@@ -112,7 +186,6 @@ class SimpleSelect extends React.Component {
 
   handleSearch (e) {
     this.setState({ loading: true });
-    // TODO method to querie database
     let { 
       startDate, 
       endDate, 
@@ -137,7 +210,7 @@ class SimpleSelect extends React.Component {
       if (e.isOpen) {
         if (typeof e.value !== 'string') {
           if (e.value === null) { 
-            return this.setState({validationMsg: 'Atenção os campos em brancos serão ignorados'})
+            return this.setState({validationMsg: 'Atenção os campos de input em brancos serão ignorados'})
            }
           inputs[e.name] = e.value.map(e => e.value)
         } else {
@@ -157,29 +230,51 @@ class SimpleSelect extends React.Component {
       selectedOutputs: outputs,
       selectedInputs: inputs
     };
-    // if (!dataToSend.selectedInputs) return alert(`Campos de multipla escolha em branco, por favor insira valores ou elimine o campo`)
+    console.log('dataToSend', dataToSend)
+    if(dataToSend.dbConnection === null || dataToSend.dbConnection === 'undefined' || dataToSend.dbConnection === '') {
+      this.setState({loading: false}) 
+      return alert(`Por favor escolha qual a fonte a pesquisar`)
+    }
+
+    if (!dataToSend.selectedOutputs.filter(e => e !== false).length > 0) {
+      return this.setState({loading: false, validationMsg: 'Por favor seleccione pelo menos uma coluna de Output'}) 
+    }
+
+    this.setState({noSearchBtn: true})
     exportXLS(dataToSend).then(Response => {
       let exportName =
       `Extração_${dataToSend.searchTable}_${moment(dataToSend.startDate).format('YYYY-MM-DD')}_a_${dataToSend.endDate}.xlsx`;
-      return console.log('Resp', Response.data)
-      /* let file = new File(Response.data, exportName)
-      fileSaver.saveAs(file); */
       this.downloadFile(Response.data, exportName)
-      this.setState({ loading: false });
+      this.setState({ loading: false, validationMsg: '', noSearchBtn: false});
     }).catch(err => {
-      return console.log(err)
-      if (err.response.status === 500) { this.setState({ loading: false ,validationMsg: `Erro de acesso ao servidor ----> ${err}` }); return }
-      if (err.response.status === 401) { this.setState({ loading: false }); return alert(`Sem Permissões`); }
-      if (err.response.status === 404) { this.setState({ loading: false ,validationMsg: `Sem resultados entre datas!!!`}); return }
+      if (err.toString() === 'Error: Network Error') { 
+        return this.setState({ 
+          loading: false, 
+          validationMsg: 'Erro de acesso ao servidor..Por favor tente outra vez..caso persista entre em contacto com Resultados Operacionais I&M',
+          noSearchBtn: false
+          });
+      }
+
+      if (err.response.status === 500) { 
+        return this.setState({ loading: false , noSearchBtn: false, validationMsg: `Erro de acesso ao servidor ----> ${err}` }); 
+      }
+
+      if (err.response.status === 401) { 
+        return this.setState({ loading: false, noSearchBtn: false, validationMsg: `Sem Permissões ----> ${err}` }); 
+      }
+
+      if (err.response.status === 404) { 
+        return this.setState({ loading: false , noSearchBtn: false, validationMsg: `Sem resultados entre datas!!!`}); 
+      }
     });
   }
-  
+
   downloadFile (data, name) {
-   let blob = new Blob([data], {type: 'application/octet-stream'});
+    let blob = new Blob([data], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
     let url = window.URL.createObjectURL(blob);
     let a = document.createElement('A');
     a.href = url;
-    a.target = '_blank';
+    // a.target = '_blank';
     a.download = name;
     document.body.appendChild(a);
     a.click();
@@ -200,7 +295,9 @@ class SimpleSelect extends React.Component {
         filtrosDatas: Response.data.filtrosDatas,
         searchDateType: Response.data.filtrosDatas[0],
         searchTable: Response.data.searchTables,
-        validationMsg: ''
+        validationMsg: '',
+        fonte: event.target.value,
+        newTemplate: true
       });
     }).catch(err => {
       return alert(`${err}`)
@@ -208,11 +305,11 @@ class SimpleSelect extends React.Component {
   }
 
   handleOptionSelect = event => {
-    this.setState({ table: event.target.value});
+    this.setState({ loading: false, table: event.target.value});
   }
 
   handleFilters = event => {
-    this.setState({ searchDateType: event.target.value })
+    this.setState({ loading: false, searchDateType: event.target.value })
   }
 
   /*****************************************************************************************************
@@ -278,7 +375,8 @@ class SimpleSelect extends React.Component {
       fonteAvailable, filtrosDatas, colunasInput,
       colunasOutput, outputsLabel, imagem, 
       table, selectedDisplay, selectedInputs,
-      outputToggleAll, selectedOutputs
+      outputToggleAll, selectedOutputs, noSearchBtn,
+      noSearchBtn2, templateName, search, inputOutputModified
     } = this.state;
 
     const dateSelector = !this.state.filtrosDatas
@@ -291,7 +389,7 @@ class SimpleSelect extends React.Component {
     const selectedStyle = {color: 'red', fontWeight: 'bold'};
     const tableSelect = this.state.searchOpt
       ? <TableSelect
-        	renderValue={table ? table : null}
+        	renderValue={table}
           action={{tableSelect: this.handleOptionSelect}}
           values={imagem} />
       : null;
@@ -301,6 +399,32 @@ class SimpleSelect extends React.Component {
           <i className="fa fa-spinner fa-spin" style={{fontSize: '50px', color: 'red'}}></i> 
         </div>
     : null;
+
+    const templates = this.state.fonteAvailable
+      ? <div> 
+          <li>
+          <div style={{padding: '5px 0'}}>
+            <Input
+              label='Novo template <Nome> Atualizar o atual'
+              action={this.changeTemplateName.bind(this)}
+              value={templateName}
+            />
+          </div>
+          </li>
+          <li>
+            <Template
+              templatePage='dumper'
+              fonte={this.state.fonte}
+              className='kewlPanel'
+              actions={{
+                onSelectChange: this.onTemplateSelectChange.bind(this),
+                onSaveChanges: this.onTemplateSaveChanges.bind(this)
+              }}
+              saveIsActive={newTemplate}
+            />
+        </li>
+      </div>
+      : null
 
     return (  
       <div>
@@ -332,6 +456,7 @@ class SimpleSelect extends React.Component {
             }}
           />
           <BetweenDates
+            noSearchBtn={noSearchBtn}
             title='Data de fim'
             selected={endDate}
             startDate={endDate}
@@ -343,6 +468,7 @@ class SimpleSelect extends React.Component {
         </div>
         </FormControl>
       </form>
+      {templates}
       {loading}
       <div >
         <ul className='container-fluid'>

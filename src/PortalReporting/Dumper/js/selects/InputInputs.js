@@ -18,7 +18,7 @@ let InputInputs = ({inputs, action, validationMsg}) => {
   return (
     <ul className='flex-list'>
       {inputsReady}
-      <p style={{color: 'red'}}>{validationMsg}</p>
+      <p style={{color: 'red', fontWeight: '800'}}>{validationMsg}</p>
     </ul>
   );
 };
@@ -39,6 +39,7 @@ let SomeInput = ({data, action, validationMsg}) => {
       <div style={{width: '250px'}}>
         <label>{data.label}</label>
         <Select
+          value={data.value}
           onChange={action.bind(this, data)}
           options={data.options}
           isMulti

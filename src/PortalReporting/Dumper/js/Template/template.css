@@ -1,0 +1,8 @@
+.li-list {
+  list-style: none;
+  display: inline-flex;
+}
+
+.fa-3x {
+  font-size: 2.0em;
+}

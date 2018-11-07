@@ -27,8 +27,7 @@ div {
 }
 
 #inputs-list {
-  list-style: none;
-  display: inline-block;
+  width: calc(100%/4);
 }
 
 #outputs-list {

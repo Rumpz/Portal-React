@@ -1,5 +1,5 @@
 import axios from 'axios';
-const SERVER = 'http://wdt20731:8080/navbar';
+const SERVER = '/navbar';
 
 function fetchMenus () {
   return axios.get(`${SERVER}/menus`);

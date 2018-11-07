@@ -1,5 +1,6 @@
 import axios from 'axios';
-const SERVER = 'http://wdt20731:8080/dump/columns';
+const SERVER = '/dump/columns';
+const DUMPER = 'http://wdt20731:7000/dump/columns';
 
 function getOptions () {
   return axios.get(`${SERVER}/options`);
@@ -10,11 +11,12 @@ function columnsByID (data) {
 }
 
 function exportXLS (data) {
-  let url = `${SERVER}/exportXLS`;
+  let url = `${DUMPER}/exportXLS`;
   return axios({
     url: url,
     type: 'get',
-    params: data
+    params: data,
+    responseType: 'arraybuffer'
   });
 }
 
