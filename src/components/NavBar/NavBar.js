@@ -90,10 +90,9 @@ export class NavBar extends React.Component {
             <Typography className={classes.title} variant='title' color='inherit' noWrap>
               Portal Reporting Alpha 7.3.10a
             </Typography>
-            <span style={{marginLeft: '1000px'}}>
+            <span style={{marginLeft: 'auto', marginRight: '0px'}}>
               <a style={{color: 'white'}} href='/logout'><i className='material-icons'> power_settings_new</i></a>
             </span>
-            <div className={classes.grow} />
           </Toolbar>
         </AppBar>
       </div>

@@ -100,6 +100,12 @@ export default class MainPage extends Component {
             </section>
           )
         : null;
+        const style = {
+          cursor: 'pointer',
+          borderBottom: '2px solid red',
+          listStyle: 'none',
+          margin: '20px 50px 0px 0px'
+        }
 
     return (
       <div className='main-div'>
@@ -107,13 +113,13 @@ export default class MainPage extends Component {
         <h1>{title}</h1>
         <h4 style={{margin: '0px auto'}}>Funcionalidades e páginas</h4>
         <ul className='mainPage-ul'>
-          <li onClick={this.showPageInfo.bind(null, 'reporting')}>
+          <li style={style} onClick={this.showPageInfo.bind(null, 'reporting')}>
             Reporting
           </li>
-          <li onClick={this.showPageInfo.bind(null, 'dumper')}>
+          <li style={style} onClick={this.showPageInfo.bind(null, 'dumper')}>
             Extrator de dados
           </li>
-          <li onClick={this.showPageInfo.bind(null, 'navbar')}>
+          <li style={style} onClick={this.showPageInfo.bind(null, 'navbar')}>
             Barra de navegação
           </li>
         </ul>

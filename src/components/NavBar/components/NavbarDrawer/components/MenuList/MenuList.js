@@ -5,7 +5,6 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import ListSubheader from '@material-ui/core/ListSubheader';
 import Divider from '@material-ui/core/Divider';
 import InboxIcon from '@material-ui/icons/Inbox';
 
@@ -29,11 +28,11 @@ export const MenuList = (props) => {
 const ListElements = (props) => {
   const list = props.list.map((element, index) => {
     return (
-      <ListItem key={element + index} button >
+      <ListItem onClick={props.action.bind(null, element.link)} key={element + index} button >
         <ListItemIcon>
           <InboxIcon />
         </ListItemIcon>
-        <ListItemText primary={element.name} onClick={props.action.bind(null, element.link)} />
+        <ListItemText primary={element.name} />
       </ListItem>
     );
   });

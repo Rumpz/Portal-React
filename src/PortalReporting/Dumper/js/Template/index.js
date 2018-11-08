@@ -102,7 +102,12 @@ export default class Templates extends Component {
         : updateTemplate(data);
       promisse
         .then(res => this.getOptions({templateFK: this.state.templateFK, page: this.state.templatePage}))
-        .catch(err => alert(err));
+        .catch(err => {
+          if (err.toString() === 'Error: Request failed with status code 500') {
+            return alert(`Está a tentar inserir um template que já existe, por favor utilize outro "nome"`);
+          }
+          alert(`${err}`);
+        });
     });
   }
 
