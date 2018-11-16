@@ -6,6 +6,6 @@ import './index.css';
 // import App from './PortalReporting/Reporting/index';
 // import App from './PortalReporting/Dumper/index';
 import App from './PortalReporting/MainPage/index';
-
+// import App from './PortalReporting/FAQs/index';
 ReactDOM.render(<App />, document.getElementById('root'));
 // registerServiceWorker();
