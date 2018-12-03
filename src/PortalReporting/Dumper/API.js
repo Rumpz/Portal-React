@@ -1,17 +1,26 @@
 import axios from 'axios';
-const SERVER = '/dump/columns';
-const DUMPER = 'http://wdt20731:7000/dump/columns';
+const SERVER = '/dump';
 
 function getOptions () {
-  return axios.get(`${SERVER}/options`);
+  return axios.get(`${SERVER}/columns/options`);
 }
 
 function columnsByID (data) {
-  return axios.get(`${SERVER}/columnsByID`, {params: {id: data}});
+  return axios.get(`${SERVER}/columns/columnsByID`, {params: {id: data}});
 }
 
 function exportXLS (data) {
-  let url = `${DUMPER}/exportXLS`;
+  let url = `${SERVER}/columns/exportXLS`;
+  return axios({
+    url: url,
+    type: 'get',
+    params: data,
+    responseType: 'arraybuffer'
+  });
+}
+
+function exportProcedureXLS (data) {
+  let url = `${SERVER}/procedure/exportProcedureXLS`;
   return axios({
     url: url,
     type: 'get',
@@ -23,5 +32,6 @@ function exportXLS (data) {
 export {
   exportXLS,
   getOptions,
-  columnsByID
+  columnsByID,
+  exportProcedureXLS
 };

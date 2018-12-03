@@ -25,7 +25,7 @@ import Template from './Template/index';
 import { findOptions, newTemplate } from '../js/Template/API';
 
 // API imports
-import { getOptions, columnsByID, exportXLS } from '../API';
+import { getOptions, columnsByID, exportXLS, exportProcedureXLS } from '../API';
 
 //CSS import
 import '../css/select.css';
@@ -69,8 +69,8 @@ class SimpleSelect extends React.Component {
       fonteAvailable: 0,
       searchDateType: '',
       table: '',
-      startDate: moment(),
-      endDate: moment(),
+      startDate: '',
+      endDate: '',
       selectedDisplay: '',
       selectedInputs: [],
       selectedOutputs: [],
@@ -88,8 +88,11 @@ class SimpleSelect extends React.Component {
       newTemplate: true,
       outputToggleAll: false,
       search: false,
-      fonte: ''
+      fonte: '',
+      procedure: '',
+      procedureArgs: ''
     };
+
     this.selectInput = this.selectInput.bind(this);
     this.setSelectedInputsValue = this.setSelectedInputsValue.bind(this);
     this.selectOutput = this.selectOutput.bind(this);
@@ -184,16 +187,106 @@ toggleTemplateSaveMode () {
     this.setState({endDate: e});
   }
 
-  handleSearch (e) {
-    this.setState({ loading: true });
+  /*** Handles xlsx download by procedure ***************************************************************************************/
+  /******************************************************************************************************************************/
+  handleProcedure (e) {
     let { 
-      startDate, 
-      endDate, 
-      searchDateType, 
+      startDate,
+      endDate,
+      searchDateType,
       imagem,
       options,
       table,
-      selectedInputs, 
+      selectedInputs,
+      selectedOutputs,
+      searchTable,
+      dbConnection,
+      procedureArgs,
+      filtrosDatas
+    } = this.state;
+
+    let inputs = {};
+    selectedInputs.map(e => {
+      if (e.isOpen) {
+        if (typeof e.value !== 'string') {
+          if (e.value === null) {
+            return this.setState({validationMsg: 'Atenção os campos de input em brancos serão ignorados'})
+           }
+          inputs[e.name] = e.value.map(e => e.value)
+        } else {
+          if (e.value === '') { return this.setState({validationMsg: 'Atenção os campos em brancos serão ignorados'}) }
+          inputs[e.name] = e.value;
+        }
+      }
+    });
+    
+    
+    const dataToSend = {
+      dbConnection: dbConnection,
+      startDate: startDate ? moment(startDate).format('YYYY-MM-DD') : null,
+      endDate: endDate ? moment(endDate).format('YYYY-MM-DD') : null,
+      searchDateType: searchDateType,
+      searchTable: searchTable[0],
+      selectedInputs: inputs,
+      unselectedInputs: this.state.selectedInputs.map(e => e.name),
+      procedureArgs: procedureArgs
+    };
+
+    // if filtrosDatas exists the procedure needs start and endDate.
+    if (filtrosDatas) {
+      if (!startDate && !endDate) {
+        return this.setState({
+          loading: false, 
+          validationMsg: 'O procedimento pedido necessita de datas, por favor insira a data de inicio e a data de fim'
+        }) 
+      } else {
+        this.setState({loading: true})
+        exportProcedureXLS(dataToSend).then(Response => {
+          let exportName =
+          `Extração_procedimento_${moment(dataToSend.startDate).format('YYYY-MM-DD')}_a_${dataToSend.endDate}.xlsx`;
+          this.downloadFile(Response.data, exportName)
+          this.setState({loading: false, validationMsg: ''})
+        }).catch(err => {
+          this.setState({loading: false, validationMsg: `${err}`})
+        })
+      }
+    } else if (!filtrosDatas) {
+      this.setState({loading: true})
+      exportProcedureXLS(dataToSend).then(Response => {
+        let exportName =
+        `Extração_procedimento_${moment().format('YYYY-MM-DD')}.xlsx`;
+        this.downloadFile(Response.data, exportName)
+        this.setState({loading: false, validationMsg: ''})
+      }).catch(err => {
+        if (err.response.status === 500) { 
+          return this.setState({ loading: false , noSearchBtn: false, validationMsg: `Erro de acesso ao servidor ----> ${err}` }); 
+        }
+  
+        if (err.response.status === 401) { 
+          return this.setState({ loading: false, noSearchBtn: false, validationMsg: `Sem Permissões ----> ${err}` }); 
+        }
+  
+        if (err.response.status === 404) { 
+          return this.setState({ loading: false , noSearchBtn: false, validationMsg: `Sem resultados entre datas!!!`}); 
+        }
+      })
+    }
+  }
+    
+
+    
+/******************************************************************************************************************************/
+/******************************************************************************************************************************/
+  handleSearch (e) {
+    this.setState({ loading: true });
+    let { 
+      startDate,
+      endDate,
+      searchDateType,
+      imagem,
+      options,
+      table,
+      selectedInputs,
       selectedOutputs,
       searchTable,
       dbConnection
@@ -209,9 +302,9 @@ toggleTemplateSaveMode () {
     selectedInputs.map(e => {
       if (e.isOpen) {
         if (typeof e.value !== 'string') {
-          if (e.value === null) { 
+          if (e.value === null) {
             return this.setState({validationMsg: 'Atenção os campos de input em brancos serão ignorados'})
-           }
+          }
           inputs[e.name] = e.value.map(e => e.value)
         } else {
           if (e.value === '') { return this.setState({validationMsg: 'Atenção os campos em brancos serão ignorados'}) }
@@ -230,16 +323,16 @@ toggleTemplateSaveMode () {
       selectedOutputs: outputs,
       selectedInputs: inputs
     };
-    console.log('dataToSend', dataToSend)
+
     if(dataToSend.dbConnection === null || dataToSend.dbConnection === 'undefined' || dataToSend.dbConnection === '') {
-      this.setState({loading: false}) 
+      this.setState({loading: false});
       return alert(`Por favor escolha qual a fonte a pesquisar`)
     }
 
     if (!dataToSend.selectedOutputs.filter(e => e !== false).length > 0) {
       return this.setState({loading: false, validationMsg: 'Por favor seleccione pelo menos uma coluna de Output'}) 
     }
-
+  
     this.setState({noSearchBtn: true})
     exportXLS(dataToSend).then(Response => {
       let exportName =
@@ -252,7 +345,7 @@ toggleTemplateSaveMode () {
           loading: false, 
           validationMsg: 'Erro de acesso ao servidor..Por favor tente outra vez..caso persista entre em contacto com Resultados Operacionais I&M',
           noSearchBtn: false
-          });
+        });
       }
 
       if (err.response.status === 500) { 
@@ -283,6 +376,7 @@ toggleTemplateSaveMode () {
 
   handleChange = event => {
     columnsByID(event.target.value).then(Response => {
+      console.log(Response.data)
       this.setState({
         [event.target.name]: event.target.value,
         dbConnection: Response.data.dbConnection,
@@ -293,11 +387,15 @@ toggleTemplateSaveMode () {
         outputsLabel: Response.data.outputsLabel,
         fonteAvailable: Response.data.available,
         filtrosDatas: Response.data.filtrosDatas,
-        searchDateType: Response.data.filtrosDatas[0],
+        searchDateType: Response.data.filtrosDatas ? Response.data.filtrosDatas[0] : false,
         searchTable: Response.data.searchTables,
+        procedure: Response.data.procedure,
+        procedureArgs: Response.data.procedureArgs,
         validationMsg: '',
         fonte: event.target.value,
-        newTemplate: true
+        newTemplate: true,
+        startDate: '',
+        endDate: ''
       });
     }).catch(err => {
       return alert(`${err}`)
@@ -379,7 +477,7 @@ toggleTemplateSaveMode () {
       noSearchBtn2, templateName, search, inputOutputModified
     } = this.state;
 
-    const dateSelector = !this.state.filtrosDatas
+    const dateSelector = !this.state.filtrosDatas || this.state.procedure
       ?
       null
       : <div className='table-select'>
@@ -400,7 +498,7 @@ toggleTemplateSaveMode () {
         </div>
     : null;
 
-    const templates = this.state.fonteAvailable
+    const templates = this.state.fonteAvailable && this.state.procedure === 0
       ? <div> 
           <li>
           <div style={{padding: '5px 0'}}>
@@ -447,6 +545,7 @@ toggleTemplateSaveMode () {
           <div className={classes.datePickers}>
           {dateSelector}
           <BetweenDates
+            disabled={!this.state.filtrosDatas}
             noSearchBtn
             title='Data de inicio'
             selected={startDate}
@@ -456,13 +555,16 @@ toggleTemplateSaveMode () {
             }}
           />
           <BetweenDates
+            disabled={!this.state.filtrosDatas}
             noSearchBtn={noSearchBtn}
             title='Data de fim'
             selected={endDate}
             startDate={endDate}
             action={{
               startDateSelect: this.endDateSelect.bind(this),
-              search: this.handleSearch.bind(this)
+              search: this.state.procedure 
+                ? this.handleProcedure.bind(this)
+                : this.handleSearch.bind(this)
             }}
           />
         </div>
@@ -470,7 +572,6 @@ toggleTemplateSaveMode () {
       </form>
       {templates}
       {loading}
-      <div >
         <ul className='container-fluid'>
           <li><a onClick={this.changeDisplay.bind(null, 'selectInputs')} style={selectedDisplay === 'selectInputs' ? selectedStyle : null}>Inputs</a></li>
           <li><a onClick={this.changeDisplay.bind(null, 'selectOutputs')} style={selectedDisplay === 'selectOutputs' ? selectedStyle : null}>Outputs</a></li>
@@ -489,7 +590,7 @@ toggleTemplateSaveMode () {
               values={selectedInputs}
             />
           </div>
-          <div style={{display: selectedDisplay === 'selectOutputs' ? 'inline-block' : 'none'}}>
+          <div style={{display: !this.state.procedure && selectedDisplay === 'selectOutputs' ? 'inline-block' : 'none'}}>
             <SelectOutputs
               outputsLabel={outputsLabel}
               action={this.selectOutput.bind(this)}
@@ -499,7 +600,6 @@ toggleTemplateSaveMode () {
             />
           </div>
         </div>
-      </div>
       </div>
     );
   }
@@ -523,11 +623,10 @@ const Available = () => {
       <FormHelperText style={{color: 'green'}}>Disponivel</FormHelperText>
     </div>
   );
-  
 }
 
 const TableSelect = ({values, action, renderValue}) => {
-  const vals = values ? 
+  const vals = values ?
     (
       <div>
         <p><strong> Aplicar filtro </strong></p>

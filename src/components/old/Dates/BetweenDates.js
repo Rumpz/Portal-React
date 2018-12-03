@@ -4,7 +4,7 @@ import { SearchBtn } from '../Buttons/Buttons';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-const BetweenDates = ({startDate, endDate, action, maxDate, orientation, noSearchBtn, title}) => {
+const BetweenDates = ({startDate, endDate, action, maxDate, orientation, noSearchBtn, title, disabled}) => {
   let btn = noSearchBtn
     ? null
     : (<div>
@@ -16,6 +16,7 @@ const BetweenDates = ({startDate, endDate, action, maxDate, orientation, noSearc
       <div className={orientation ? '' : 'betweenDates-beginDate'}>
         <label>{title}</label>
         <DatePicker
+          disabled={disabled}
           className='form-control'
           dateFormat='YYYY-MM-DD'
           selected={startDate}

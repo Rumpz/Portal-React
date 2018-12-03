@@ -11,10 +11,6 @@ li {
   display: inline-block;
 }
 
-a {
-  padding-left: 20px;
-}
-
 div {
   text-align: center;
 }
@@ -22,8 +18,19 @@ div {
 .container-fluid {
   display: inline-block;
   margin-top: 10px;
+  list-style: none;
+}
+
+.container-fluid, li {
+  margin-top: 10px;
   margin-left: 10px;
   list-style: none;
+  display: inline-block;
+}
+
+.container-fluid, a {
+ padding-right: 15px;
+ margin-left: 5px;
 }
 
 #inputs-list {

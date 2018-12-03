@@ -65,9 +65,6 @@ export default class Templates extends Component {
   }
 
   componentWillReceiveProps (props) {
-    console.log('props', props);
-    console.log('state', this.state);
-
     if (props.fonte !== this.state.templateFK) {
       this.getOptions({templateFK: props.fonte, page: this.state.templatePage});
       this.setState({templateFK: props.fonte, saveIsActive: props.saveIsActive});
