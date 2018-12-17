@@ -21,13 +21,6 @@ div {
   list-style: none;
 }
 
-.container-fluid, li {
-  margin-top: 10px;
-  margin-left: 10px;
-  list-style: none;
-  display: inline-block;
-}
-
 .container-fluid, a {
  padding-right: 15px;
  margin-left: 5px;
@@ -35,8 +28,26 @@ div {
 
 #inputs-list {
   width: calc(100%/4);
+  display:inline-flex;
+  margin-right:10px;
 }
 
 #outputs-list {
   width: calc(100%/4);
+  display:inline-flex;
+  margin-right:10px;
+}
+
+.inputs-list {
+  width:100%;
+  text-align:center;
+  margin: 0 100px;
+  padding: 0;
+}
+
+.outputs-list {
+  width:100%;
+  text-align:center;
+  margin: 0 100px;
+  padding: 0;
 }

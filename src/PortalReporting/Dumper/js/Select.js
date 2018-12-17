@@ -10,7 +10,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import Loading from '../../../components/old/Loading/Loading';
 
 // Custom imports
 import BetweenDates from '../../../components/old/Dates/BetweenDates';
@@ -22,7 +21,7 @@ import { Input } from '../../../components/old/Inputs/Inputs';
 import Template from './Template/index';
 
 // Template API
-import { findOptions, newTemplate } from '../js/Template/API';
+import { newTemplate } from '../js/Template/API';
 
 // API imports
 import { getOptions, columnsByID, exportXLS, exportProcedureXLS } from '../API';
@@ -243,7 +242,7 @@ toggleTemplateSaveMode () {
         this.setState({loading: true})
         exportProcedureXLS(dataToSend).then(Response => {
           let exportName =
-          `Extração_procedimento_${moment(dataToSend.startDate).format('YYYY-MM-DD')}_a_${dataToSend.endDate}.xlsx`;
+          `Extração_procedimento_${moment().format('YYYY-MM-DD_HH:mm')}.xlsx`;
           this.downloadFile(Response.data, exportName)
           this.setState({loading: false, validationMsg: ''})
         }).catch(err => {
@@ -254,7 +253,7 @@ toggleTemplateSaveMode () {
       this.setState({loading: true})
       exportProcedureXLS(dataToSend).then(Response => {
         let exportName =
-        `Extração_procedimento_${moment().format('YYYY-MM-DD')}.xlsx`;
+        `Extração_procedimento_${moment().format('YYYY-MM-DD_HH:mm')}.xlsx`;
         this.downloadFile(Response.data, exportName)
         this.setState({loading: false, validationMsg: ''})
       }).catch(err => {
@@ -324,7 +323,7 @@ toggleTemplateSaveMode () {
       selectedInputs: inputs
     };
 
-    if(dataToSend.dbConnection === null || dataToSend.dbConnection === 'undefined' || dataToSend.dbConnection === '') {
+    if (dataToSend.dbConnection === null || dataToSend.dbConnection === 'undefined' || dataToSend.dbConnection === '') {
       this.setState({loading: false});
       return alert(`Por favor escolha qual a fonte a pesquisar`)
     }
@@ -376,7 +375,6 @@ toggleTemplateSaveMode () {
 
   handleChange = event => {
     columnsByID(event.target.value).then(Response => {
-      console.log(Response.data)
       this.setState({
         [event.target.name]: event.target.value,
         dbConnection: Response.data.dbConnection,
@@ -583,22 +581,20 @@ toggleTemplateSaveMode () {
             validationMsg={this.state.validationMsg}
           />
         </div>
-        <div className='kewlPanel'>
-          <div style={{display: selectedDisplay === 'selectInputs' ? 'block' : 'none'}}>
-            <SelectInputs
-              action={this.selectInput.bind(this)}
-              values={selectedInputs}
-            />
-          </div>
-          <div style={{display: !this.state.procedure && selectedDisplay === 'selectOutputs' ? 'inline-block' : 'none'}}>
-            <SelectOutputs
-              outputsLabel={outputsLabel}
-              action={this.selectOutput.bind(this)}
-              toggleAll={this.toggleAllOutputs.bind(this)}
-              toggleIsOn={outputToggleAll}
-              values={selectedOutputs}
-            />
-          </div>
+        <div style={{margin: '0px 100px', display: selectedDisplay === 'selectInputs' ? 'block' : 'none'}}>
+          <SelectInputs
+            action={this.selectInput.bind(this)}
+            values={selectedInputs}
+          />
+        </div>
+        <div style={{margin: '0px 100px', display: !this.state.procedure && selectedDisplay === 'selectOutputs' ? 'block' : 'none'}}>
+          <SelectOutputs
+            outputsLabel={outputsLabel}
+            action={this.selectOutput.bind(this)}
+            toggleAll={this.toggleAllOutputs.bind(this)}
+            toggleIsOn={outputToggleAll}
+            values={selectedOutputs}
+          />
         </div>
       </div>
     );

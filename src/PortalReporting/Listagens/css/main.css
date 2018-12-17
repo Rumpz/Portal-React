@@ -1,0 +1,35 @@
+#root {
+  text-align: center;
+}
+
+.input-div {
+  width: 25%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.select-div {
+  margin: 0 auto;
+  width: 50%;
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
+
+#outputs-list {
+  width: calc(100%/4);
+  display:inline-flex;
+  margin-right:10px;
+}
+
+.outputs-list {
+  text-align: center;
+  margin: 0 auto;
+  padding-left: 150px;
+}
+
+label {
+  display: inherit;
+  max-width: 100%;
+  margin-bottom: 5px;
+  font-weight: bold;
+}

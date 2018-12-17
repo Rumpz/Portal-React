@@ -47,7 +47,6 @@ export default class Columns extends Component {
     let selectedOutputs = this.state.selectedOutput;
     selectedOutputs[event] = !selectedOutputs[event];
     this.setState({selectedOutput: selectedOutputs});
-    console.log(this.state)
   }
 
   handleInputs = event => {
@@ -55,9 +54,7 @@ export default class Columns extends Component {
     let index = 0;
     // event.value = event.type === 'select' ? event : event;
     this.setState({selectedInput: selectedInput});
-    console.log('aaaaaaaa', this.state)
     if (event.label !== this.state.inputOptions.label) {
-      console.log(event)
       this.setState({ 
         inputOptions: [event],
         isInputOpen: !this.state.isInputOpen
@@ -66,13 +63,11 @@ export default class Columns extends Component {
   }
 
   handleDisplay (e) {
-    console.log(this.state)
     const content = e.target.textContent;
     this.setState({ selectedDisplay: content });
   }
 
   handleReactSelect (e) {
-    console.log(e)
   }
 
   render () {
@@ -93,7 +88,7 @@ export default class Columns extends Component {
             values={outputs} 
           />
         </div>
-        <button onClick={() => {console.log(this.state)}} className='btn btn-danger'>Search & Download</button>
+        <button onClick={() => {} className='btn btn-danger'>Search & Download</button>
       </div>
     );
   }

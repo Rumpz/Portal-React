@@ -48,7 +48,6 @@ class PortalReporting extends Component {
       showReports: true,
       showModal: true
     });
-    console.log(this.state);
   }
 
   handleRow (e) {
@@ -64,7 +63,6 @@ class PortalReporting extends Component {
   }
 
   handleTableButton () {
-    console.log('click');
   }
 
   handleReportDownload (id) {

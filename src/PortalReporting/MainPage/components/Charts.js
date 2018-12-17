@@ -100,8 +100,9 @@ const renderLegend = (props) => {
       style={{
         listStyle: 'none',
         display: 'inline-flex',
-        background: 'linear-gradient(#B2B3B7, #D3D3D3)',
-        borderRadius: '3px'
+        borderStyle: 'solid',
+        borderColor: 'linear-gradient(#B2B3B7, #D3D3D3)',
+        borderWidth: '2px'
       }}>
       {
         payload.map((entry, index) => (
@@ -110,8 +111,7 @@ const renderLegend = (props) => {
               style={{
                 color: `${payload[index].color}`,
                 paddingLeft: '20px',
-                textAlign: 'center',
-                fontSize: 'large'
+                textAlign: 'center'
               }}
               key={`item-${index}`}>{entry.value}
             </li>

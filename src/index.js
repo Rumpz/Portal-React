@@ -4,8 +4,10 @@ import './index.css';
 // import registerServiceWorker from './registerServiceWorker';
 
 // import App from './PortalReporting/Reporting/index';
-import App from './PortalReporting/Dumper/index';
 // import App from './PortalReporting/MainPage/index';
 // import App from './PortalReporting/FAQs/index';
+// import App from './PortalReporting/Dumper/index';
+import App from './PortalReporting/Listagens/index';
+
 ReactDOM.render(<App />, document.getElementById('root'));
 // registerServiceWorker();

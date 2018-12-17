@@ -39,7 +39,7 @@ const Input = ({label, action, type, value, placeholder, disabled}) => {
         onFocus={action}
         placeholder={placeholder}
         disabled={disabled}
-        />
+      />
     </div>
   );
 };

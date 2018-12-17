@@ -90,7 +90,7 @@ export default class Templates extends Component {
     let {selectedTemplate, templatePage, templateFK} = this.state;
     let id = JSON.parse(selectedTemplate).id;
     this.actions.onSaveChanges((err, data) => {
-      if (err) console.log(err);
+      if (err) return alert(`${err}`);
       data.page = templatePage;
       data.id = id;
       data.templateFK = templateFK;

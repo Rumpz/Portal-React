@@ -1,0 +1,19 @@
+
+.items li {
+  float: left;
+  margin: 0 auto;
+}
+
+ul.items {
+  margin: 0 150px;
+  list-style-type: none;
+  float: left;
+}
+
+ul.items li {
+  display: inline; 
+}
+
+ul {
+  padding: 0;
+}

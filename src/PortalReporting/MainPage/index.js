@@ -15,7 +15,7 @@ export default class MainPage extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      title: 'Resumos',
+      title: "KPI's I&M",
       graphicData: '',
       lineData: [],
       barData: [],
@@ -62,8 +62,6 @@ export default class MainPage extends Component {
   }
 
   componentDidMount () {
-    console.log(this.state)
-    /*  */
   }
 
   componentDidUpdate () {
@@ -72,12 +70,10 @@ export default class MainPage extends Component {
 
   // Order Div components by ascendant order number
   sortChildrenDivsById (parentId) {
-    console.log('aqui');
     var main = document.getElementById(parentId);
     Array.prototype.map.call(main.children, Object).sort(function (a, b) {
       return +a.id.match(/\d+/) - +b.id.match(/\d+/);
     }).forEach(function (elem) {
-      console.log('element', elem);
       main.appendChild(elem);
     });
   }
