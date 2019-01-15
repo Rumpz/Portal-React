@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 // Custom imports
 import NavBar from '../../components/NavBar/NavBar';
 import { LineGraph, BarGraph } from './components/Charts';
+import { TableViewer } from './components/tableViewer';
 import { OptionsList } from './components/OptionsList';
 import { getGraphic, getOptions } from './API';
 
@@ -19,9 +20,11 @@ export default class MainPage extends Component {
       graphicData: '',
       lineData: [],
       barData: [],
+      tableData: [],
       barChart: false,
       lineChart: false,
       radialChart: false,
+      tableView: false,
       permission: 'admin',
       options: [],
       loading: true
@@ -35,10 +38,12 @@ export default class MainPage extends Component {
       const bar = Response.data.filter((e) => e.type === 'bar');
       const line = Response.data.filter((e) => e.type === 'line');
       const radial = Response.data.filter((e) => e.type === 'radial');
+      const table = Response.data.filter((e) => e.type === 'table');
       this.setState({
         graphicData: Response.data,
         lineData: line,
         barData: bar,
+        tableData: table,
         barChart: Boolean(bar.length > 0),
         lineChart: Boolean(line.length > 0),
         radialChart: Boolean(radial.length > 0),
@@ -90,10 +95,18 @@ export default class MainPage extends Component {
       ? <BarGraph data={this.state.barData} />
       : null;
 
+    const table = this.state.tableData
+      ? this.state.tableData.map((el, index) => {
+        return (
+          <TableViewer key={`table-${index}`} values={el} />
+        );
+      })
+      : null;
+
     return (
       <div className='main-div'>
         <NavBar />
-        <h1>{this.state.title}</h1>
+        <h1><strong>{this.state.title}</strong></h1>
         <div className='options-div'>
           <OptionsList
             className={{
@@ -109,6 +122,7 @@ export default class MainPage extends Component {
           {this.state.loading ? <Loading /> : null}
         </div>
         <div id='graph-div' style={{display: 'inline-grid'}}>
+          {table}
           {lineGraph}
           {barGraph}
         </div>

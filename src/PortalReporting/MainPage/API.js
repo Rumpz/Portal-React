@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 const SERVER = '/mainpage';
 
 function getGraphic (data) {

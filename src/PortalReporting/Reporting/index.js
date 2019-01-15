@@ -19,7 +19,7 @@ class PortalReporting extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      title: 'Portal Reporting',
+      title: 'Centro de Conhecimento',
       searchOptions: [
         {label: 'Operação', value: 'Operação'},
         {label: 'Gestão', value: 'Gestão'}
@@ -75,7 +75,7 @@ class PortalReporting extends Component {
 
   handleSubCatFilter (e) {
     if (!e.length) {
-      this.setState({ errMsg: 'Por favor selecione o filtro antes da pesquisa!!!' });
+      this.setState({ errMsg: 'Por favor selecione os filtros antes da pesquisa!!!' });
       return;
     }
     getByfilter(e).then(Response => {
@@ -97,20 +97,22 @@ class PortalReporting extends Component {
     byCategory(event.value).then(Response => {
       this.setState({
         showReports: true,
-        data: Response.data
+        data: Response.data,
+        subCats: Response.data.subCat
       });
     }).catch(err => {
       alert(`${err}`);
     })
   }
+
   render () {
     const modalData = {headers: ['a', 'b', 'c'], values: [[1, 2, 3], [4, 5, 6]]};
-    const { data, showReports, showModal, reportUrl, errMsg, searchOptions } = this.state;
+    const { data, showReports, showModal, reportUrl, errMsg, searchOptions, subCats } = this.state;
     const reportsList = showReports
       ? <ReportsList
         header={data.header}
         values={data.body}
-        subCat={data.subCat}
+        subCat={subCats}
         errMsg={errMsg}
         actions={{
           row: this.handleRow,
@@ -123,7 +125,7 @@ class PortalReporting extends Component {
     return (
       <div className='PortalReport'>
         <NavBar />
-        <h1>Pesquisa de Relatórios</h1>
+        <h1><strong>{this.state.title}</strong></h1>
         <label>Selecione uma opção</label>
         <Select
           className='react-select'

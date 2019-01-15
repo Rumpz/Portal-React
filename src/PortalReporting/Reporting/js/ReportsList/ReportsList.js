@@ -2,39 +2,36 @@ import React from 'react';
 import './css/reports.css';
 import Checkbox from '@material-ui/core/Checkbox';
 
+let filterValues = [];
 const ReportsList = (props) => {
-  const filterValues = [];
-  const filterButton = props.subCat
-    ? <button
-      id='filterButton'
-      className='btn btn-warning'
-      onClick={props.actions.checkSubCat.bind(null, filterValues)}>
-      <i className='fa fa-search' />Pesquisar
-    </button>
-    : null;
   return (
     <div style={{marginTop: '10px', marginBottom: '10px'}} className='table table-hover'>
       <h4>Filtrar por subcategoria</h4>
       <ul style={{display: 'inline-flex'}}>
-        {props.subCat ? props.subCat.map((el, index) => {
+        {props.subCat.map((el, index) => {
           return (
             <li key={el + index}>
               <label>{el}</label>
               <Checkbox
-                id={el + '_'}
+                id={`checkBox-${el}`}
                 value={el}
                 onChange={(event, checked) => {
                   return checked
                     ? filterValues.push(event.target.value)
-                    : filterValues.splice(filterValues.indexOf(el));
+                    : filterValues.splice(filterValues.indexOf(event.target.value));
                 }}
               />
             </li>
           );
-        }) : null}
-        {filterButton}
+        })}
+        <button
+          id='filterButton'
+          className='btn btn-warning'
+          onClick={props.actions.checkSubCat.bind(null, filterValues)}>
+          <i className='fa fa-search' />Pesquisar
+        </button>
       </ul>
-      <p id='filterP'><b>{props.errMsg}</b></p>
+      <strong><p id='filterP'>{props.errMsg}</p></strong>
       <table>
         <Header arrValues={props.header} />
         <Body body={props.values} actions={props.actions} style={props.style} />

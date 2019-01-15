@@ -272,8 +272,6 @@ toggleTemplateSaveMode () {
     }
   }
     
-
-    
 /******************************************************************************************************************************/
 /******************************************************************************************************************************/
   handleSearch (e) {
@@ -475,7 +473,7 @@ toggleTemplateSaveMode () {
       noSearchBtn2, templateName, search, inputOutputModified
     } = this.state;
 
-    const dateSelector = !this.state.filtrosDatas || this.state.procedure
+    const dateSelector = !this.state.filtrosDatas || this.state.procedure || fonteAvailable <= 0
       ?
       null
       : <div className='table-select'>
@@ -483,7 +481,7 @@ toggleTemplateSaveMode () {
           <DateSelector style={{height: '32px', borderRadius: '3px', textColor: 'red'}} action={this.handleFilters} options={!filtrosDatas ? [] : filtrosDatas}/>
         </div>;
     const selectedStyle = {color: 'red', fontWeight: 'bold'};
-    const tableSelect = this.state.searchOpt
+    const tableSelect = this.state.searchOpt || fonteAvailable <= 0
       ? <TableSelect
         	renderValue={table}
           action={{tableSelect: this.handleOptionSelect}}
@@ -525,7 +523,7 @@ toggleTemplateSaveMode () {
     return (  
       <div>
         <form className={classes.root} autoComplete="off">
-          <h1>Extrator de Dados</h1>
+          <h1><strong>Extrator de Dados</strong></h1>
           <FormControl className={classes.formControl}>
           <InputLabel style={{color: 'black'}} htmlFor="name">Fonte</InputLabel>
           <Select
@@ -554,7 +552,7 @@ toggleTemplateSaveMode () {
           />
           <BetweenDates
             disabled={!this.state.filtrosDatas}
-            noSearchBtn={noSearchBtn}
+            noSearchBtn={noSearchBtn || !fonteAvailable}
             title='Data de fim'
             selected={endDate}
             startDate={endDate}

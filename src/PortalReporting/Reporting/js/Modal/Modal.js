@@ -18,10 +18,7 @@ const Modal = (props) => {
         overlayClassName='Overlay'>
         <div className='modal-body'>
           <h4>Relatório disponivel no link abaixo indicado</h4>
-          <ModalTable
-            header={props.modalHeader}
-            values={props.modalBody}
-          />
+          <p>Os relatórios procurados podem ser extraidos através do link em baixo, excepto relatórios localizados na rede</p>
         </div>
         {link}
         <div className='modal-buttons'>
@@ -35,7 +32,10 @@ const Modal = (props) => {
     </div>
   );
 };
-
+/* <ModalTable
+header={props.modalHeader}
+values={props.modalBody}
+/> */
 const LinkedLink = (props) => {
   return (
     <a href={props.link} target='_blank'>Download Link</a>

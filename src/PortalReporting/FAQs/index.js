@@ -7,6 +7,7 @@ import reporting from '../../assets/img/reporting.PNG';
 import navbarOpened from '../../assets/img/navbarOpened.PNG';
 import navbarClosed from '../../assets/img/navbarClosed.PNG';
 import resumos from '../../assets/img/resumos.png';
+import listagensPage from '../../assets/img/listagensPage.png';
 
 // Custom imports
 import NavBar from '../../components/NavBar/NavBar';
@@ -29,10 +30,10 @@ export default class MainPage extends Component {
 
   render () {
     const { title, showPageDetail } = this.state;
-    const showPages = showPageDetail === 'reporting'
+    const showPages = showPageDetail === 'Centro de conhecimento'
       ? (
           <section>
-            <h4>Reporting</h4>
+            <h4>Centro de conhecimento</h4>
             <div className='img-div1'>
               <img style={{margin: '0px auto'}} src={reporting} />
             </div>
@@ -100,10 +101,10 @@ export default class MainPage extends Component {
               <p>Ao clicar na ligação pretendida é redirecionado para a página em questão</p>
             </section>
           )
-        : showPageDetail === 'resumos'
+        : showPageDetail === 'KPI´S I&M'
         ? (
           <section>
-            <h4>Resumos</h4>
+            <h4>KPI´S I&M</h4>
             <div>
               <img style={{marginTop: '20px', marginLeft: '20px'}} src={resumos} />
             </div>
@@ -118,6 +119,39 @@ export default class MainPage extends Component {
             <p>Após a selecção será apresentado os gráficos correspondentes para cada opção</p>
           </section>
         )
+        : showPageDetail === 'listagens'
+        ? (
+          <section>
+            <h4>Listagens</h4>
+            <div className='img-div2'>
+              <img src={listagensPage} />
+            </div>
+            <strong><p style={{color: 'red'}}>1 - Fonte</p></strong>
+            <p>Fonte a aplicar na busca, após a escolha as tabelas e campos a pesquisar disponiveis ficam visíveis</p>
+            <br />
+
+            <strong><p style={{color: 'red'}}>2 - Filtro</p></strong>
+            <p>O filtro apenas está disponivel em certas fontes, dentro das quais estarão disponiveis as pesquisas as tabelas de diarias, semanais ou mensais</p>
+            <br />
+
+            <strong><p style={{color: 'red'}}>3 - Pesquisa por campo</p></strong>
+            <p>Campo a pesquisar</p>
+            <strong><p> Ex: "pesquisar por número de OT</p></strong>
+            <br />
+
+            <strong><p style={{color: 'red'}}>4 - Botão para upload de listagem</p></strong>
+            <p> Recebe uma listagem através de ficheiro .txt com os items a pesquisar </p>
+            <br />
+
+            <strong><p style={{color: 'red'}}>5 - Botão para iniciar a pesquisa</p></strong>
+            <p>Botão que dá inicio à pesquisa após inserir os items pretendidos</p>
+            <br />
+
+            <strong><p style={{color: 'red'}}>6 - Outputs</p></strong>
+            <p>Campos pretendidos na extração dos dados</p>
+            <br />
+          </section>
+        )
         : null;
 
         const style = {
@@ -130,11 +164,11 @@ export default class MainPage extends Component {
     return (
       <div className='main-div'>
         <NavBar />
-        <h1>{title}</h1>
+        <h1><strong>{title}</strong></h1>
         <h4 style={{margin: '0px auto'}}>Funcionalidades e páginas</h4>
         <ul className='mainPage-ul'>
-          <li style={style} onClick={this.showPageInfo.bind(null, 'reporting')}>
-            Reporting
+          <li style={style} onClick={this.showPageInfo.bind(null, 'Centro de conhecimento')}>
+            Centro de conhecimento
           </li>
           <li style={style} onClick={this.showPageInfo.bind(null, 'dumper')}>
             Extrator de dados
@@ -142,8 +176,11 @@ export default class MainPage extends Component {
           <li style={style} onClick={this.showPageInfo.bind(null, 'navbar')}>
             Barra de navegação
           </li>
-          <li style={style} onClick={this.showPageInfo.bind(null, 'resumos')}>
-            Resumos
+          <li style={style} onClick={this.showPageInfo.bind(null, 'KPI´S I&M')}>
+            KPI´S I&M
+          </li>
+          <li style={style} onClick={this.showPageInfo.bind(null, 'listagens')}>
+            Listagens
           </li>
         </ul>
         {showPages}

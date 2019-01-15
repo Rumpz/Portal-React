@@ -27,10 +27,12 @@ class PortalReporting extends Component {
       imagem: [],
       tabela: [],
       available: '',
+      showSearch: 1,
       uploadVisible: false,
       fieldOpt: [],
       outputToggleAll: false,
-      loading: false
+      loading: false,
+      user: ''
     };
 
     this.handleFonte = this.handleFonte.bind(this);
@@ -65,7 +67,7 @@ class PortalReporting extends Component {
         outputslabel: Response.data.outputsLabel,
         imagem: Response.data.imagem,
         tabela: Response.data.tabela,
-        available: Response.data.available
+        showSearch: Response.data.available
       });
     }).catch(err => {
       alert(`${err}`);
@@ -100,7 +102,7 @@ class PortalReporting extends Component {
         loading: false
       })
       : uploadFile(query.dbConnection, query.file).then(Response => { // upload the file to the server and wait response
-        this.setState({ loading: false, validationMsg: false, buttonDisabled: false, data: Response.data });
+        this.setState({ loading: false, validationMsg: false, buttonDisabled: false, user: Response.data.user, data: Response.data.info });
       }).catch(err => {
         alert(`${err}`);
       });
@@ -133,7 +135,8 @@ class PortalReporting extends Component {
       tabela: typeof tabela === 'string' ? tabela : tabela[0],
       campoPesquisa: campoPesquisa,
       selectedOutputs: selectedOutputs,
-      values: data
+      values: data,
+      user: this.state.user
     };
 
     /*  if (dataToSend.dbConnection === null || dataToSend.dbConnection === 'undefined' || dataToSend.dbConnection === '') {
@@ -188,7 +191,7 @@ class PortalReporting extends Component {
   }
 
   render () {
-    const campoPesquisa = this.state.fieldOpt.length > 0
+    const campoPesquisa = this.state.fieldOpt.length > 0 && this.state.showSearch
       ? <div className='field-div'>
         <label>Pesquisa por campo</label>
         <Select
@@ -199,7 +202,7 @@ class PortalReporting extends Component {
       </div>
       : null;
 
-    const tabelas = this.state.imagem
+    const tabelas = this.state.imagem && this.state.showSearch
       ? <div className='table-div'>
         <label>Tabela a pesquisar</label>
         <Select
@@ -211,7 +214,7 @@ class PortalReporting extends Component {
       </div>
       : null;
 
-    const upload = this.state.uploadVisible
+    const upload = this.state.uploadVisible && this.state.showSearch
       ? <div>
         <label >
         Insira a lista a pesquisar (.txt)
@@ -226,7 +229,7 @@ class PortalReporting extends Component {
       </div>
       : null;
 
-    const outputs = this.state.fieldOpt.length > 0
+    const outputs = this.state.fieldOpt.length > 0 && this.state.showSearch
       ? <Outputs
         outputsLabel={this.state.outputslabel}
         toggleAll={this.toggleAllOutputs}
@@ -245,7 +248,7 @@ class PortalReporting extends Component {
     return (
       <div className='listagens'>
         <NavBar />
-        <h1>{this.state.title}</h1>
+        <h1><strong>{this.state.title}</strong></h1>
         <div className='input-div'>
           <label>Escolha a fonte</label>
           <Select
@@ -253,6 +256,11 @@ class PortalReporting extends Component {
             options={this.state.options}
             disabled={this.state.available}
           />
+          <strong><p style={{color: 'red', marginTop: '10px'}}>
+            {!this.state.showSearch ? 'Fonte temporariamente indisponível'
+              : null}
+          </p>
+          </strong>
           <div className='select-div'>
             {tabelas}
             {campoPesquisa}
