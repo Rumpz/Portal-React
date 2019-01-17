@@ -6,7 +6,7 @@ function getOptions () {
 }
 
 function columnsByID (data) {
-  return axios.get(`${SERVER}/columns/columnsByID`, {params: {id: data}});
+  return axios.get(`${SERVER}/columns/columnsByID`, { params: { id: data } });
 }
 
 function exportXLS (data) {

@@ -15,6 +15,7 @@ class PortalReporting extends Component {
     super(props);
 
     this.state = {
+      showMsg: false,
       title: 'Listagens',
       buttonDisabled: true,
       campoPesquisa: '',
@@ -99,6 +100,7 @@ class PortalReporting extends Component {
       ? this.setState({
         validationMsg: 'Por favor insira um ficheiro no formato .txt',
         buttonDisabled: true,
+        showMsg: true,
         loading: false
       })
       : uploadFile(query.dbConnection, query.file).then(Response => { // upload the file to the server and wait response
@@ -111,7 +113,7 @@ class PortalReporting extends Component {
   selectOutput (input) {
     let outputs = this.state.outputs;
     outputs[input] = !outputs[input];
-    this.setState({selectedOutputs: outputs, inputOutputModified: true});
+    this.setState({selectedOutputs: outputs, inputOutputModified: true, showMsg: false});
   }
 
   toggleAllOutputs (e) {
@@ -120,7 +122,7 @@ class PortalReporting extends Component {
     for (let i in outputs) {
       outputs[i] = value;
     }
-    this.setState({selectedOutputs: outputs, outputToggleAll: value});
+    this.setState({selectedOutputs: outputs, outputToggleAll: value, showMsg: false});
   }
 
   handleSubmit (e) {
@@ -149,7 +151,7 @@ class PortalReporting extends Component {
     } */
 
     if (!dataToSend.selectedOutputs.filter(e => e !== false).length > 0) {
-      return this.setState({loading: false, validationMsg: 'Por favor seleccione pelo menos uma coluna de Output'});
+      return this.setState({loading: false, showMsg: true, validationMsg: 'Por favor seleccione pelo menos uma coluna de Output'});
     }
 
     this.setState({loading: true});
@@ -162,19 +164,15 @@ class PortalReporting extends Component {
       if (err.toString() === 'Error: Network Error') {
         return this.setState({
           loading: false,
+          showMsg: true,
           validationMsg: 'Erro de acesso ao servidor..Por favor tente outra vez..caso persista entre em contacto com Resultados Operacionais I&M'
         });
-      }
-      if (err.response.status === 500) {
-        return this.setState({ loading: false, noSearchBtn: false, validationMsg: `Erro de acesso ao servidor ----> ${err}` });
-      }
-
-      if (err.response.status === 401) {
-        return this.setState({ loading: false, noSearchBtn: false, validationMsg: `Sem Permissões ----> ${err}` });
-      }
-
-      if (err.response.status === 404) {
-        return this.setState({ loading: false, noSearchBtn: false, validationMsg: `Sem resultados entre os items pesquisados!!!` });
+      } else if (err.response.status === 500) {
+        return this.setState({ loading: false, noSearchBtn: false, showMsg: true, validationMsg: `Erro de acesso ao servidor ----> ${err}` });
+      } else if (err.response.status === 401) {
+        return this.setState({ loading: false, noSearchBtn: false, showMsg: true, validationMsg: `Sem Permissões ----> ${err}` });
+      } else if (err.response.status === 404) {
+        return this.setState({ loading: false, noSearchBtn: false, showMsg: true, validationMsg: `Sem resultados entre os items pesquisados!!!` });
       }
     });
   }
@@ -274,7 +272,7 @@ class PortalReporting extends Component {
             <button className='btn btn-standard' disabled={this.state.buttonDisabled} onClick={this.handleSubmit.bind(this)} >Pesquisar</button>
             <br />
             <br />
-            {!this.state.available ? <strong><p style={{color: 'red'}}>{this.state.validationMsg}</p></strong> : null}
+            {this.state.showMsg ? <strong><p style={{color: 'red'}}>{this.state.validationMsg}</p></strong> : null}
           </div>
           : null
         }

@@ -113,10 +113,6 @@ const renderLegend = (props) => {
       style={{
         listStyle: 'none',
         display: 'inline-flex',
-        borderStyle: 'solid',
-        borderColor: 'slategrey',
-        borderRadius: '15px',
-        borderWidth: '2px',
         paddingLeft: '20px'
       }}>
       {
