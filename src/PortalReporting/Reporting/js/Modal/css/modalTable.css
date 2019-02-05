@@ -19,7 +19,8 @@ table {
   width: 80%;
   border-style: solid;
   border-color: #B1C7D7;
-  font: 62.5%/1.3 normal Helvetica, sans-serif;
+  font: 65.5%/1.3 normal Helvetica, sans-serif;
+  font-weight: bold;
 }
 
 p, h1 {

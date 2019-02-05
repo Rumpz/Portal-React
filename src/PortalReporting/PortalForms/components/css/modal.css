@@ -1,0 +1,112 @@
+.Modal {
+  margin: 0px auto;
+  max-width: fit-content;
+  width: auto;
+  background-color: #EDE8E8;
+  text-align: center;
+  border-radius: 10px;
+  border-style: groove;
+  font-weight: 500px;
+  max-height: calc(110vh - 210px);
+  overflow-y: auto;
+}
+
+#text {
+  height: 35.5px;
+  border-radius: 4px;
+  margin-top: 2px;
+  text-rendering: 10px;
+}
+
+.Overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding-top: 150px;
+}
+
+.modal-footer {
+  background-color: #CAC7C7
+}
+
+.modal-buttons {
+  padding: 2px;
+}
+
+.row {
+  margin: 0 auto;
+  border-style: groove;
+  border-radius: 10px;
+  box-shadow: 5px 10px #D2D2D2;
+  padding: 5px 5px 5px 5px;
+}
+
+.row:empty {
+  display: none;
+}
+
+.row, label {
+  margin-top: 3px;
+  padding-bottom: 10px;
+}
+
+.row {
+  width: 350px;
+}
+
+textarea {
+  margin-top: 20px;
+  width: 300px;
+  height: 150px;
+  border-radius: 4px;
+}
+
+input {
+  width: 250px;
+}
+
+.modal-body {
+  width: 400px
+}
+
+.Detail-Modal-Wrapper {
+  margin: 0px auto;
+  max-height: fit-content;
+  max-width: fit-content;
+  background-color: #EDE8E8;
+  text-align: center;
+  border-style: ridge;
+  border-radius: 10px;
+  max-height: calc(100vh - 210px);
+  overflow-y: auto;
+}
+
+#formRender-div{
+  display: block;
+  margin-bottom: 20px;
+}
+
+#details-div {
+  display: block;
+}
+
+:focus {
+  outline:0;
+}
+
+input, select, textarea {
+  display: flex;
+  margin: 0 auto;
+}
+
+.ReactModal__Overlay {
+  padding: 75px;
+}
+/* .details-modal {
+  border-style: groove;
+  border-radius: 10px;
+  border-color: rgb(242, 244, 244);
+  text-align: center;
+} */

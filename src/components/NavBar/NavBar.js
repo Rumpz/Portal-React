@@ -28,10 +28,6 @@ export class NavBar extends React.Component {
     };
   }
 
-  componentDidMount() {
-    
-  }
-
   handleMenuClose = () => {
     this.setState({ anchorEl: null });
   };
@@ -43,8 +39,19 @@ export class NavBar extends React.Component {
         isDrawerOpen: true
       })
     }).catch(err => {
-      alert(`${err}`)
-    })  
+      if (err.response.status === 500) { 
+        return alert(`Erro de acesso ao servidor: ${err}`);
+      }
+      if (err.response.status === 404) { 
+        return this.setState({
+          list: [{
+            name: 'Efectuar Login',
+            link: '/login'
+          }],
+          isDrawerOpen: true
+        })
+      }
+    });
   }
 
   handleDrawerClose = () => {
@@ -74,26 +81,15 @@ export class NavBar extends React.Component {
             <Typography className={classes.title} variant='title' color='inherit' noWrap>
               Menu
             </Typography>
-            <div className={classes.search}>
-              <div className={classes.searchIcon}>
-                <SearchIcon />
-              </div>
-              <Input
-                placeholder='Search…'
-                disableUnderline
-                classes={{
-                  root: classes.inputRoot,
-                  input: classes.inputInput,
-                }}
-              />
-            </div>
-            <Typography className={classes.title} variant='title' color='inherit' noWrap>
-              Portal Reporting Alpha 7.3.10a
+          
+            <Typography style={{marginLeft: '80px'}}className={classes.title} variant='title' color='inherit' noWrap>
+              Portal Reporting Beta 1.0b
             </Typography>
             <span style={{marginLeft: 'auto', marginRight: '0px'}}>
               <a style={{color: 'white'}} href='/logout'><i className='material-icons'> power_settings_new</i></a>
             </span>
           </Toolbar>
+      
         </AppBar>
       </div>
     );
@@ -105,3 +101,18 @@ NavBar.propTypes = {
 };
 
 export default withStyles(styles)(NavBar);
+
+// SEARCH BAR
+/* <div className={classes.search}>
+<div className={classes.searchIcon}>
+  <SearchIcon />
+</div>
+<Input
+  placeholder='Search…'
+  disableUnderline
+  classes={{
+    root: classes.inputRoot,
+    input: classes.inputInput,
+  }}
+/>
+</div> */

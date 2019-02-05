@@ -16,6 +16,8 @@
     "papaparse": "^4.6.1",
     "react": "^16.7.0",
     "react-bootstrap": "^0.32.4",
+    "react-bootstrap-table-next": "^2.1.0",
+    "react-bootstrap-table2-filter": "^1.1.2",
     "react-datepicker": "^1.6.0",
     "react-dom": "^16.5.1",
     "react-modal": "^3.6.1",

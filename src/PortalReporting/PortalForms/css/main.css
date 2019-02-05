@@ -1,0 +1,41 @@
+body {
+  text-align: center
+}
+
+.div-container {
+  width: 250px;
+  margin: 0 auto;
+}
+
+.table-div {
+  padding-left: 30px;
+  padding-right: 30px;
+  text-align: center;
+}
+
+.ul-div {
+  width: fit-content;
+  max-width: 400px;
+  background-color: #97B0B0;
+  margin: 10px auto;
+}
+
+ul {
+  padding-left: 0;
+  border-style: solid;
+  border-width: medium;
+  border-color: #8C8A8A;
+  border-radius: 5px;
+}
+
+.table-div, tr, th, input {
+  text-align: center;
+}
+
+.table-div tr:nth-child(even){
+  background-color: #f2f2f2;
+}
+
+.table-div tr:hover {
+  background-color: #ddd;
+}

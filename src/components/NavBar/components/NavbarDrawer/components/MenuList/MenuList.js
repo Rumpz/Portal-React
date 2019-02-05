@@ -37,7 +37,7 @@ const ListElements = (props) => {
     );
   });
   return (
-    <List>
+    <List style={{borderStyle: 'none'}}>
       {list}
       <Divider />
     </List>

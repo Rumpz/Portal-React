@@ -26,9 +26,9 @@ const ReportsList = (props) => {
         })}
         <button
           id='filterButton'
-          className='btn btn-warning'
+          className='btn btn-success'
           onClick={props.actions.checkSubCat.bind(null, filterValues)}>
-          <i className='fa fa-search' />Pesquisar
+          <i className='fa fa-search' /> Pesquisar
         </button>
       </ul>
       <strong><p id='filterP'>{props.errMsg}</p></strong>
