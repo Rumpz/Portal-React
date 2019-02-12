@@ -8,6 +8,8 @@ import navbarOpened from '../../assets/img/navbarOpened.PNG';
 import navbarClosed from '../../assets/img/navbarClosed.PNG';
 import resumos from '../../assets/img/resumos.png';
 import listagensPage from '../../assets/img/listagensPage.png';
+import forms from '../../assets/img/forms.PNG';
+import formsForm from '../../assets/img/forms_form.png';
 
 // Custom imports
 import NavBar from '../../components/NavBar/NavBar';
@@ -37,17 +39,17 @@ export default class MainPage extends Component {
             <div className='img-div1'>
               <img style={{margin: '0px auto'}} src={reporting} />
             </div>
-            <strong><p style={{color: 'red'}}>1 - Categoria</p></strong>
-            <p>Escolha de qual a categoria a pesquisar, ao selecionar são disponibilizados filtros de sub-categorias e os relatórios associados à categoria principal</p>
+            <strong><p style={{color: 'red'}}>1 - Filtro de texto</p></strong>
+            <p>Possibilidade de filtrar os campos através de texto em todas as colunas</p>
             <br />
 
-            <strong><p style={{color: 'red'}}>2 - Sub-Categoria</p></strong>
-            <p>Filtro de sub-categoria a aplicar, dentro da primeira categoria existe a possibilidade de filtrar as sub-categorias associadas</p>
-            <p>Após a pesquisa dos filtros aplicados, irão ser disponibilizados todos os relatórios que se encontram dentro dos parâmetros pesquisados</p>
+            <strong><p style={{color: 'red'}}>2 - Ordem </p></strong>
+            <p>Opção para ordenar a coluna em questão</p>
+            <p>A ordem apenas funciona para cada uma das colunas</p>
             <br />
 
             <strong><p style={{color: 'red'}}>3 - Relatórios</p></strong>
-            <p>Ao selecionar o relatório pretendido é disponibilizado um link para download</p>
+            <p>Ao selecionar a linha pretendida, é disponibilizado um link para download com o relatório pretendido </p>
             <br />
           </section>
         )
@@ -152,7 +154,49 @@ export default class MainPage extends Component {
             <br />
           </section>
         )
-        : null;
+        : showPageDetail === 'formulários'
+        ? <section>
+        <h4>Formulários</h4>
+        <div className='img-div2'>
+          <img src={forms} />
+        </div>
+        <div className='img-div2'>
+          <img src={formsForm} />
+        </div>
+        <strong><p style={{color: 'red'}}>1 - Escolha de categoria</p></strong>
+        <p>Campo com as opções disponiveis para cada categoria do formulário</p>
+        <br />
+
+        <strong><p style={{color: 'red'}}>2 - Escolha de formulário</p></strong>
+        <p>Após a escolha da categoria são disponibilizados os formulários correspondente à categoria</p>
+        <br />
+
+        <strong><p style={{color: 'red'}}>3 - Pesquisa por filtros</p></strong>
+        <p>Possibilidade de filtrar os campos por texto ou ordem crescente / decrescente</p>
+        <br />
+
+        <strong><p style={{color: 'red'}}>4 - Tabela de campos</p></strong>
+        <p>Tabela onde são fornecidos os campos dos formulários a preencher</p>
+        <p>Ao clicar na linha pretendida o formulário será disponibilizado</p>
+        <br />
+
+        <strong><p style={{color: 'red'}}>5 - Campos editaveis</p></strong>
+        <p>Campos de formulário a alterar</p>
+        <br />
+
+        <strong><p style={{color: 'red'}}>6 - Detalhes</p></strong>
+        <p>Ao premir o botão são disponibilizados campos extra que não existem na tabela</p>
+        <br />
+
+        <strong><p style={{color: 'red'}}>7 - Guardar</p></strong>
+        <p>Botão para guardar as alterações feitas no formulário</p>
+        <br />
+
+        <strong><p style={{color: 'red'}}>8 - Fechar</p></strong>
+        <p>Botão para fechar o formulário</p>
+        <br />
+      </section>
+      : null
 
         const style = {
           cursor: 'pointer',
@@ -181,6 +225,9 @@ export default class MainPage extends Component {
           </li>
           <li style={style} onClick={this.showPageInfo.bind(null, 'listagens')}>
             Listagens
+          </li>
+          <li style={style} onClick={this.showPageInfo.bind(null, 'formulários')}>
+            Formulários
           </li>
         </ul>
         {showPages}

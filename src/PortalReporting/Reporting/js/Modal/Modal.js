@@ -1,5 +1,4 @@
 import React from 'react';
-import ModalTable from './ModalTable';
 import ReactModal from 'react-modal';
 import pasteAndGo from '../../../../assets/img/pasteAndGo.png';
 import './css/modal.css';

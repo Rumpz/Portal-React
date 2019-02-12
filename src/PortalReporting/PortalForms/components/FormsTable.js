@@ -66,7 +66,8 @@ class FormsTable extends Component {
           dataField: Object.keys(e).toString(),
           hidden: Object.values(e)[0] === 0 ? Object.keys(e).toString() : null,
           text: Object.keys(e).toString(),
-          filter: textFilter()
+          filter: textFilter(),
+          sort: true
         };
       });
       return tableHeader;

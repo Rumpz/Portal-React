@@ -1,8 +1,8 @@
 import axios from 'axios';
-const SERVER = 'http://wdt20731:8080/reporting';
+const SERVER = '/reporting';
 
 function fetchReports (url) {
-  return axios.get(`${SERVER}`);
+  return axios.get(`${SERVER}/all`);
 }
 
 function byCategory (data) {

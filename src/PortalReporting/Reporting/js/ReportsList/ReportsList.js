@@ -1,78 +1,79 @@
-import React from 'react';
-import './css/reports.css';
-import Checkbox from '@material-ui/core/Checkbox';
+import React, { Component } from 'react';
+import BootstrapTable from 'react-bootstrap-table-next';
+import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 
-let filterValues = [];
-const ReportsList = (props) => {
-  return (
-    <div style={{marginTop: '10px', marginBottom: '10px'}} className='table table-hover'>
-      <h4>Filtrar por subcategoria</h4>
-      <ul style={{display: 'inline-flex'}}>
-        {props.subCat.map((el, index) => {
-          return (
-            <li key={el + index}>
-              <label>{el}</label>
-              <Checkbox
-                id={`checkBox-${el}`}
-                value={el}
-                onChange={(event, checked) => {
-                  return checked
-                    ? filterValues.push(event.target.value)
-                    : filterValues.splice(filterValues.indexOf(event.target.value));
-                }}
-              />
-            </li>
-          );
-        })}
-        <button
-          id='filterButton'
-          className='btn btn-success'
-          onClick={props.actions.checkSubCat.bind(null, filterValues)}>
-          <i className='fa fa-search' /> Pesquisar
-        </button>
-      </ul>
-      <strong><p id='filterP'>{props.errMsg}</p></strong>
-      <table>
-        <Header arrValues={props.header} />
-        <Body body={props.values} actions={props.actions} style={props.style} />
-      </table>
-    </div>
-  );
-};
+// IMPORT CSS
+import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
+// API
+import { getReport } from '../../API';
 
-const Header = ({arrValues}) => {
-  let thVals = arrValues.map((value, idx) => {
-    return <th key={idx}>{value}</th>;
-  });
-  return (
-    <thead>
-      <tr>{thVals}</tr>
-    </thead>
-  );
-};
+// Custom Modal
+import Modal from '../Modal/Modal';
+class ReportsList extends Component {
+  constructor (props) {
+    super(props);
+    this.state = {
+      table: props.data,
+      id: '',
+      url: '',
+      isOpen: false
+    };
+  }
 
-const Body = ({body, actions, style}) => {
-  let row = body.map((value, idx) => {
-    return <Row style={style} key={idx} value={value} actions={actions} />;
-  });
-  return (
-    <tbody>
-      {row}
-    </tbody>
-  );
-};
+  componentDidMount () {
+  }
 
-const Row = ({value, actions, style}) => {
-  let tRows = value.values.map((element, idx) => {
-    return <Cell key={idx} value={element}><button className='icon-home icon-4x'>..</button></Cell>;
-  });
-  return (
-    <tr onClick={actions ? actions.row.bind(null, value) : null}>{tRows}</tr>
-  );
-};
+  handleClose () {
+    this.setState({isOpen: !this.state.isOpen});
+  }
 
-const Cell = ({value, style}) => {
-  return <td style={style} >{value}</td>;
-};
+  render () {
+    const { table, url, isOpen } = this.state;
+    const keys = Object.keys(table[0]);
+    const columns = () => {
+      const tableHeader = keys.map((e, index) => {
+        return {
+          dataField: e,
+          hidden: e === 'id',
+          text: e,
+          filter: textFilter(),
+          sort: true
+        };
+      });
+      return tableHeader;
+    };
+
+    // Get Rows detail for FormRendering
+    const rowEvents = {
+      onClick: (e, row, rowIndex) => {
+        getReport(row.id).then(Response => {
+          this.setState({
+            url: Response.data,
+            isOpen: true
+          });
+        }).catch(err => {
+          this.setState({err: `${err}`});
+        });
+      }
+    };
+
+    return (
+      <div>
+        <BootstrapTable
+          keyField='id'
+          data={table}
+          columns={columns()}
+          rowEvents={rowEvents}
+          filter={filterFactory()}
+        />
+        <Modal
+          isOpen={isOpen}
+          reportUrl={url}
+          closeModal={this.handleClose.bind(this)}
+        />
+      </div>
+    );
+  }
+}
 
 export default ReportsList;
