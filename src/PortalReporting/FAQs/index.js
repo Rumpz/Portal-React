@@ -211,23 +211,23 @@ export default class MainPage extends Component {
         <h1><strong>{title}</strong></h1>
         <h4 style={{margin: '0px auto'}}>Funcionalidades e páginas</h4>
         <ul className='mainPage-ul'>
-          <li style={style} onClick={this.showPageInfo.bind(null, 'Centro de conhecimento')}>
-            Centro de conhecimento
+          <li style={style} onClick={this.showPageInfo.bind(null, 'KPI´S I&M')}>
+            KPI´S I&M
           </li>
           <li style={style} onClick={this.showPageInfo.bind(null, 'dumper')}>
             Extrator de dados
           </li>
-          <li style={style} onClick={this.showPageInfo.bind(null, 'navbar')}>
-            Barra de navegação
-          </li>
-          <li style={style} onClick={this.showPageInfo.bind(null, 'KPI´S I&M')}>
-            KPI´S I&M
+          <li style={style} onClick={this.showPageInfo.bind(null, 'Centro de conhecimento')}>
+            Centro de conhecimento
           </li>
           <li style={style} onClick={this.showPageInfo.bind(null, 'listagens')}>
             Listagens
           </li>
           <li style={style} onClick={this.showPageInfo.bind(null, 'formulários')}>
             Formulários
+          </li>
+          <li style={style} onClick={this.showPageInfo.bind(null, 'navbar')}>
+            Barra de navegação
           </li>
         </ul>
         {showPages}

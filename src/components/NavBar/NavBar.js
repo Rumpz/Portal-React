@@ -81,15 +81,13 @@ export class NavBar extends React.Component {
             <Typography className={classes.title} variant='title' color='inherit' noWrap>
               Menu
             </Typography>
-          
-            <Typography style={{marginLeft: '80px'}}className={classes.title} variant='title' color='inherit' noWrap>
+            <Typography style={{marginLeft: '80px'}} className={classes.title} variant='title' color='inherit' noWrap>
               Portal Reporting Beta 1.0b
             </Typography>
             <span style={{marginLeft: 'auto', marginRight: '0px'}}>
               <a style={{color: 'white'}} href='/logout'><i className='material-icons'> power_settings_new</i></a>
             </span>
           </Toolbar>
-      
         </AppBar>
       </div>
     );
