@@ -2,7 +2,6 @@ import React from 'react';
 
 let Outputs = ({action, toggleAll, toggleIsOn, values, outputsLabel}) => {
   let outputKeys = Object.keys(values);
-  outputKeys.sort();
   let options = outputKeys.map((key, idx) => {
     return (
       <li id='outputs-list' key={`key-${idx}`} >

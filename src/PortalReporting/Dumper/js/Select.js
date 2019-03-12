@@ -11,6 +11,9 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
+// React Tooltip component
+import ReactTooltip from 'react-tooltip'
+
 // Custom imports
 import BetweenDates from '../../../components/old/Dates/BetweenDates';
 import DateSelector from './DateSelector';
@@ -40,7 +43,7 @@ const styles = theme => ({
     maxWidth: 'auto'
   },
   selectEmpty: {
-    marginTop: theme.spacing.unit * 2,
+    marginTop: theme.spacing.unit * 2
   },
   datePickers: {
     display: 'flex',
@@ -58,6 +61,7 @@ class SimpleSelect extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      tooltip: 'Escolha uma fonte',
       name: '',
       dbConnection: '',
       inputs: [],
@@ -376,6 +380,7 @@ toggleTemplateSaveMode () {
       this.setState({
         [event.target.name]: event.target.value,
         dbConnection: Response.data.dbConnection,
+        tooltip: Response.data.tooltip,
         searchOpt: event.target.value,
         imagem: Response.data.imagem,
         selectedInputs: Response.data.colunasInput,
@@ -529,13 +534,18 @@ toggleTemplateSaveMode () {
           <Select
             value={this.state.name}
             onChange={this.handleChange}
+            style={{fontSize: 'large'}}
             inputProps={{
               name: 'name',
               id: 'name',
             }}
           >
-          {options.map((el, index) => <MenuItem key={el + index} value={el.value}>{el.name}</MenuItem>)}
+          {options.map((el, index) => <MenuItem style={{fontSize: 'large'}} key={el + index} value={el.value}>{el.name}</MenuItem>)}
           </Select>
+          <div style={{fontSize: '2em'}}>
+            <a data-tip={this.state.tooltip}><i style={{color: 'rgb(124, 172, 167)'}} className="fas fa-info-circle" /></a>
+            <ReactTooltip place="bottom" type="info" effect="float"/>
+          </div>
           {fonteAvailable > 0 ? <Available /> : fonteAvailable <= 0 ? <Unavailable /> : null}
           {tableSelect}
           <div className={classes.datePickers}>

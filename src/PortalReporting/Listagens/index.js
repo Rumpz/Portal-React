@@ -5,6 +5,7 @@ import moment from 'moment';
 // Custom imports
 import NavBar from '../../components/NavBar/NavBar';
 import Outputs from './js/Outputs';
+import BetweenDates from '../../components/old/Dates/BetweenDates';
 
 import { exportXLS, uploadFile, getOptions, getAvailables } from './API';
 
@@ -20,7 +21,11 @@ class PortalReporting extends Component {
       buttonDisabled: true,
       campoPesquisa: '',
       data: 0,
+      startDate: null,
+      endDate: null,
       validationMsg: false,
+      filtrosDatas: [],
+      tipoDeData: '',
       options: [],
       outputs: [],
       outputslabel: {},
@@ -33,6 +38,7 @@ class PortalReporting extends Component {
       fieldOpt: [],
       outputToggleAll: false,
       loading: false,
+      filtroDataVisible: false,
       user: ''
     };
 
@@ -43,6 +49,8 @@ class PortalReporting extends Component {
     this.showUpload = this.showUpload.bind(this);
     this.toggleAllOutputs = this.toggleAllOutputs.bind(this);
     this.selectOutput = this.selectOutput.bind(this);
+    this.handleStartDate = this.handleStartDate.bind(this);
+    this.handleEndDate = this.handleEndDate.bind(this);
   }
 
   // get available fontes list
@@ -59,6 +67,12 @@ class PortalReporting extends Component {
 
   // Get options by selected fonte
   handleFonte (e) {
+    this.setState({
+      fieldOpt: {label: '', value: ''},
+      tipoDeData: {label: '', value: ''},
+      startDate: null,
+      endDate: null
+    })
     getOptions(e.value).then(Response => {
       Response.data = Response.data[0];
       this.setState({
@@ -67,6 +81,7 @@ class PortalReporting extends Component {
         outputs: Response.data.outputs,
         outputslabel: Response.data.outputsLabel,
         imagem: Response.data.imagem,
+        filtrosDatas: Response.data.filtrosDatas,
         tabela: Response.data.tabela,
         showSearch: Response.data.available
       });
@@ -126,13 +141,16 @@ class PortalReporting extends Component {
   }
 
   handleSubmit (e) {
-    const { maquina, data, campoPesquisa, tabela, outputs } = this.state;
+    const { maquina, data, campoPesquisa, tabela, outputs, startDate, endDate, tipoDeData } = this.state;
     let selectedOutputs = Object.keys(outputs).map(key => {
       if (outputs[key]) return key;
     });
     selectedOutputs = selectedOutputs.filter(e => e);
 
     const dataToSend = {
+      startDate: startDate ? moment(startDate).format('YYYY-MM-DD') : null,
+      endDate: endDate ? moment(endDate).format('YYYY-MM-DD') : null,
+      tipoDeData: tipoDeData !== '' ? tipoDeData.value : null,
       dbConnection: maquina,
       tabela: typeof tabela === 'string' ? tabela : tabela[0],
       campoPesquisa: campoPesquisa,
@@ -154,7 +172,7 @@ class PortalReporting extends Component {
       return this.setState({loading: false, showMsg: true, validationMsg: 'Por favor seleccione pelo menos uma coluna de Output'});
     }
 
-    this.setState({loading: true});
+    this.setState({loading: true, validationMsg: ''});
     exportXLS(dataToSend).then(Response => {
       let exportName =
       `Extração_Listagem_${dataToSend.tabela}_${moment().format('YYYY-MM-DD HH:mm')}.xlsx`;
@@ -188,6 +206,24 @@ class PortalReporting extends Component {
     document.body.removeChild(a);
   }
 
+  handleStartDate (date) {
+    this.setState({startDate: date});
+  }
+
+  handleEndDate (date) {
+    this.setState({endDate: date});
+  }
+
+  handleTipoData = event => {
+    this.setState({tipoDeData: event})
+  }
+
+  handleFiltroDatas = () => {
+    const el = document.getElementById('data-filtro-title');
+    this.state.filtroDataVisible ? el.style.color = '' : el.style.color = 'red'
+    this.state.filtroDataVisible ? el.style.fontWeight = '' : el.style.fontWeight = 'bold'
+    this.setState({filtroDataVisible: !this.state.filtroDataVisible})
+  }
   render () {
     const campoPesquisa = this.state.fieldOpt.length > 0 && this.state.showSearch
       ? <div className='field-div'>
@@ -243,6 +279,32 @@ class PortalReporting extends Component {
       </div>
       : null;
 
+    const filtroDatas = this.state.filtroDataVisible 
+      ? <div style={{marginBottom: '20px', display: 'inline-flex', width: '110%'}} className='dates-div'>
+        <div style={{width: '300px'}} className='data-type'>
+          <label>Tipo de Data</label>
+          <Select
+            options={this.state.filtrosDatas.map((e) => { return {label: e, value: e}; })}
+            onChange={this.handleTipoData.bind(this)}
+            value={this.state.tipoDeData}
+          />
+        </div>
+        
+        <BetweenDates
+          noSearchBtn
+          action={{startDateSelect: this.handleStartDate}}
+          title='Data Inicio'
+          startDate={this.state.startDate}
+        />
+        <BetweenDates
+          noSearchBtn
+          action={{startDateSelect: this.handleEndDate}}
+          title='Data de fim'
+          startDate={this.state.endDate}
+        />
+      </div>
+      : null;
+
     return (
       <div className='listagens'>
         <NavBar />
@@ -263,6 +325,12 @@ class PortalReporting extends Component {
             {tabelas}
             {campoPesquisa}
           </div>
+          <a style={{fontSize: '15px'}} id='data-filtro-title' onClick={this.handleFiltroDatas} >Filtro por data</a>
+          <p
+            style={{ marginTop: '2px', color: 'darkcyan', fontSize: '0.8em', fontStretch: 'semi-expanded'}}>
+            Atenção as datas necessitam dos três campos (tipo, ínicio e fim) ou serão ignoradas
+          </p>
+          {filtroDatas}
           {upload}
           {loading}
         </div>
