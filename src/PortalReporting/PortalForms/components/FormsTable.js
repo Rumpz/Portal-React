@@ -29,15 +29,25 @@ class FormsTable extends Component {
   }
 
   componentWillReceiveProps (props) {
+    const { maquina, tabela_dados } = this.state.tableData.header;
     if (this.state.formID !== props.formID) {
-      console.log('aqui')
       this.setState({ formID: props.formID, tableData: props.data });
     }
+    refreshTable({database: maquina, table: tabela_dados}).then(Response => {
+      this.setState({
+        tableData: {
+          header: this.state.tableData.header,
+          fields: this.state.tableData.fields,
+          table: Response.data
+        }
+      });
+    }).catch(err => {
+      alert(`${err}`);
+    });
   }
 
   handleModalClose () {
     const { maquina, tabela_dados } = this.state.tableData.header;
-    console.log(this.state.tableData)
     refreshTable({database: maquina, table: tabela_dados}).then(Response => {
       this.setState({
         tableData: {
@@ -92,7 +102,6 @@ class FormsTable extends Component {
           header={header} />
       }
     />;
-
     return (
       <div className='table-div'>
         <h4>{header.nome_form}</h4>

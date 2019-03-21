@@ -16,18 +16,39 @@ body {
 .ul-div {
   width: fit-content;
   max-width: 400px;
-  background-color: #97B0B0;
   margin: 10px auto;
 }
 
 ul {
   padding-left: 0;
-  border-style: solid;
-  border-width: medium;
   border-color: #8C8A8A;
   border-radius: 5px;
 }
 
+.args-div {
+  border-style: groove;
+  border-collapse: separate;
+  border-spacing: 15px;
+  display: flex;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.args-input {
+  border-radius: 2px;
+  height: 35px;
+  width: 200px;
+  margin: 10px;
+}
+
+.args-select {
+  width: 200px;
+  margin: 10px;
+}
+
+.args-title {
+  margin: 0 auto;
+}
 .table-div, tr, th, input {
   text-align: center;
 }
