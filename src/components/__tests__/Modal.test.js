@@ -3,7 +3,7 @@ import EnzymeAdapter from 'enzyme-adapter-react-16';
 import ShallowRenderer from 'react-test-renderer/shallow';
 import Enzyme from 'enzyme';
 import React from 'react';
-import Modal from '../Modal/Modal';
+import Modal from '../../PortalReporting/Reporting/js/Modal/Modal';
 
 // This sets up the adapter to be used by Enzyme
 Enzyme.configure({ adapter: new EnzymeAdapter() });

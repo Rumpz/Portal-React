@@ -1,4 +1,4 @@
-import openSocket from 'socket.io-client';
+/* // import openSocket from 'socket.io-client';
 const socket = openSocket();
 
 subcribe();
@@ -14,3 +14,4 @@ function subcribe () {
 export {
   refresh
 };
+*/

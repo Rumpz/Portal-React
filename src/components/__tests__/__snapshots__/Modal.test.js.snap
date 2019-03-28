@@ -24,23 +24,11 @@ exports[`renders reports list correctly 1`] = `
       className="modal-body"
     >
       <h4>
-        Resumo do relatório
+        Relatório disponivel no link abaixo indicado
       </h4>
-      <h4>
-        (possivelmente resumo do report em imagem ou dados em tabela)
-      </h4>
-      <ModalTable
-        header={
-          Array [
-            "testeHeader",
-          ]
-        }
-        values={
-          Array [
-            "testBody",
-          ]
-        }
-      />
+      <p>
+        Os relatórios procurados podem ser extraidos através do link em baixo, excepto relatórios localizados na rede
+      </p>
     </div>
     <PhisicalLink
       link="Teste"

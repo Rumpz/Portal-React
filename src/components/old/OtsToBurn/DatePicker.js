@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import './App.css';
-import DayPicker from 'react-day-picker';
-import 'react-day-picker/lib/style.css';
-import LocaleUtils from 'react-day-picker/moment';
-import 'moment/locale/pt';
+// import DayPicker from 'react-day-picker';
+// import 'react-day-picker/lib/style.css';
+// import LocaleUtils from 'react-day-picker/moment';
+// import 'moment/locale/pt';
 
 class DatePicker extends Component {
   constructor (props) {

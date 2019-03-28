@@ -56,15 +56,19 @@ export default class ExcelRender extends React.Component {
         </div>
         </div>
         <div className='row'><div className='col-xs-12'>
-          <button disabled={!this.state.data.length} className='btn btn-success' onClick={this.exportFile}>Export</button>
-        </div></div>
-        <div className='row'><div className='col-xs-12'>
+          <br />
+          <br />
           {excelTable}
-        </div></div>
+        </div>
+        </div>
       </DragDropFile>
     );
   }
 }
+
+/* <div className='row'><div className='col-xs-12'>
+<button disabled={!this.state.data.length} className='btn btn-success' onClick={this.exportFile}>Export</button>
+</div></div> */
 // if(typeof module !== 'undefined') module.exports = ExcelRender
 /* -------------------------------------------------------------------------- */
 /*
@@ -83,6 +87,7 @@ class DragDropFile extends React.Component {
     const files = evt.dataTransfer.files;
     if (files && files[0]) this.props.handleFile(files[0]);
   }
+
   render () {
     return (
       <div onDrop={this.onDrop} onDragEnter={this.suppress} onDragOver={this.suppress}>
@@ -112,8 +117,8 @@ class DataInput extends React.Component {
     return (
       <form className='form-inline'>
         <div className='form-group'>
-          <label htmlFor='file'>Spreadsheet</label>
-          <input type='file' className='form-control-file' id='file' accept={SheetJSFT} onChange={this.handleChange} />
+          <label htmlFor='file'>Visualizar ficheiro</label>
+          <input type='file' className='btn btn-success btn-file' id='file' accept={SheetJSFT} onChange={this.handleChange} />
         </div>
       </form>
     );
@@ -122,9 +127,7 @@ class DataInput extends React.Component {
 
 /* list of supported file types */
 const SheetJSFT = [
-  'xlsx', 'xlsb', 'xlsm', 'xls', 'xml', 'csv', 'txt', 'ods',
-  'fods', 'uos', 'sylk', 'dif', 'dbf', 'prn', 'qpw', '123',
-  'wb*', 'wq*', 'html', 'htm'
+  'xlsx', 'xlsb', 'xlsm', 'xls', 'xml', 'csv'
 ].map(function (x) { return '.' + x; }).join(',');
 
   /* generate an array of column objects */

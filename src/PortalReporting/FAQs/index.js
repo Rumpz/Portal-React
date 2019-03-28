@@ -10,7 +10,7 @@ import resumos from '../../assets/img/resumos.png';
 import listagensPage from '../../assets/img/listagensPage.png';
 import forms from '../../assets/img/forms.PNG';
 import formsForm from '../../assets/img/forms_form.png';
-
+import carregamentos from '../../assets/img/carregamentos.png';
 // Custom imports
 import NavBar from '../../components/NavBar/NavBar';
 
@@ -156,47 +156,79 @@ export default class MainPage extends Component {
         )
         : showPageDetail === 'formulários'
         ? <section>
-        <h4>Formulários</h4>
-        <div className='img-div2'>
-          <img src={forms} />
-        </div>
-        <div className='img-div2'>
-          <img src={formsForm} />
-        </div>
-        <strong><p style={{color: 'red'}}>1 - Escolha de categoria</p></strong>
-        <p>Campo com as opções disponiveis para cada categoria do formulário</p>
-        <br />
+            <h4>Formulários</h4>
+            <div className='img-div2'>
+              <img src={forms} />
+            </div>
+            <div className='img-div2'>
+              <img src={formsForm} />
+            </div>
+            <strong><p style={{color: 'red'}}>1 - Escolha de categoria</p></strong>
+            <p>Campo com as opções disponiveis para cada categoria do formulário</p>
+            <br />
 
-        <strong><p style={{color: 'red'}}>2 - Escolha de formulário</p></strong>
-        <p>Após a escolha da categoria são disponibilizados os formulários correspondente à categoria</p>
-        <br />
+            <strong><p style={{color: 'red'}}>2 - Escolha de formulário</p></strong>
+            <p>Após a escolha da categoria são disponibilizados os formulários correspondente à categoria</p>
+            <br />
 
-        <strong><p style={{color: 'red'}}>3 - Pesquisa por filtros</p></strong>
-        <p>Possibilidade de filtrar os campos por texto ou ordem crescente / decrescente</p>
-        <br />
+            <strong><p style={{color: 'red'}}>3 - Pesquisa por filtros</p></strong>
+            <p>Possibilidade de filtrar os campos por texto ou ordem crescente / decrescente</p>
+            <br />
 
-        <strong><p style={{color: 'red'}}>4 - Tabela de campos</p></strong>
-        <p>Tabela onde são fornecidos os campos dos formulários a preencher</p>
-        <p>Ao clicar na linha pretendida o formulário será disponibilizado</p>
-        <br />
+            <strong><p style={{color: 'red'}}>4 - Tabela de campos</p></strong>
+            <p>Tabela onde são fornecidos os campos dos formulários a preencher</p>
+            <p>Ao clicar na linha pretendida o formulário será disponibilizado</p>
+            <br />
 
-        <strong><p style={{color: 'red'}}>5 - Campos editaveis</p></strong>
-        <p>Campos de formulário a alterar</p>
-        <br />
+            <strong><p style={{color: 'red'}}>5 - Campos editaveis</p></strong>
+            <p>Campos de formulário a alterar</p>
+            <br />
 
-        <strong><p style={{color: 'red'}}>6 - Detalhes</p></strong>
-        <p>Ao premir o botão são disponibilizados campos extra que não existem na tabela</p>
-        <br />
+            <strong><p style={{color: 'red'}}>6 - Detalhes</p></strong>
+            <p>Ao premir o botão são disponibilizados campos extra que não existem na tabela</p>
+            <br />
 
-        <strong><p style={{color: 'red'}}>7 - Guardar</p></strong>
-        <p>Botão para guardar as alterações feitas no formulário</p>
-        <br />
+            <strong><p style={{color: 'red'}}>7 - Guardar</p></strong>
+            <p>Botão para guardar as alterações feitas no formulário</p>
+            <br />
 
-        <strong><p style={{color: 'red'}}>8 - Fechar</p></strong>
-        <p>Botão para fechar o formulário</p>
-        <br />
-      </section>
-      : null
+            <strong><p style={{color: 'red'}}>8 - Fechar</p></strong>
+            <p>Botão para fechar o formulário</p>
+            <br />
+          </section>
+          : showPageDetail === 'carregamentos'
+          ? <section>
+          <h4>Carregamentos</h4>
+          <div className='img-div2'>
+            <img src={carregamentos} />
+          </div>
+          <strong><p style={{color: 'red'}}>1 - Escolha de tabela</p></strong>
+          <p>Após a escolha da tabela são disponibilizados os mecanismos de insercção da mesma.</p>
+          <br />
+
+          <strong><p style={{color: 'red'}}>2 - Colunas a inserir</p></strong>
+          <p>Possibilidade de consulta das colunas a inserir referentes à tabela escolhida</p>
+          <br />
+
+          <strong><p style={{color: 'red'}}>3 - Botão de carregamento</p></strong>
+          <p>Botão responsável pela escolha de ficheiro a inserir</p>
+          <br />
+
+          <strong><p style={{color: 'red'}}>4 - Botão de upload</p></strong>
+          <p>Após pressionar o mesmo a insercção das colunas (ponto2) é iniciada</p>
+          <br />
+
+          <strong><p style={{color: 'red'}}>5 - Campo de mensagem</p></strong>
+          <p>Aqui será possível todas as mensagem relativas a esta operação</p>
+          <br />
+
+          <strong><p style={{color: 'red'}}>6 - Botão de visualização</p></strong>
+          <p>Com um funcionamento semelhante ao ponto3,</p>
+          <p>este botão permite selecionar um ficeiro e visualizar o mesmo em qualquer momento da operação</p>
+          <br />
+
+        </section>
+    : null;
 
         const style = {
           cursor: 'pointer',
@@ -225,6 +257,9 @@ export default class MainPage extends Component {
           </li>
           <li style={style} onClick={this.showPageInfo.bind(null, 'formulários')}>
             Formulários
+          </li>
+          <li style={style} onClick={this.showPageInfo.bind(null, 'carregamentos')}>
+            Carregamentos
           </li>
           <li style={style} onClick={this.showPageInfo.bind(null, 'navbar')}>
             Barra de navegação

@@ -1,0 +1,40 @@
+body {
+  text-align: center;
+}
+
+h1 {
+  margin-bottom: 10px;
+}
+
+h4 {
+
+}
+.select-opt {
+  width: 300px;
+  margin: 0 auto;
+  margin-bottom: 20px;
+}
+
+.file-viewer {
+  margin: 0 auto;
+  width: 95%;
+}
+
+.columns-div {
+  background-color: whitesmoke;
+  margin-bottom: 10px;
+}
+
+.columns-ul {
+  list-style: none;
+  display: inline-flex;
+  padding: 0;
+  color: black;
+  font-weight: bold;
+  border-style: ridge;
+  border-width: thick;
+}
+
+.proc-msg {
+  margin: 10px 10px 20px 10px;
+}
