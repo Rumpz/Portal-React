@@ -344,7 +344,7 @@ toggleTemplateSaveMode () {
       if (err.toString() === 'Error: Network Error') { 
         return this.setState({ 
           loading: false, 
-          validationMsg: 'Erro de acesso ao servidor..Por favor tente outra vez..caso persista entre em contacto com Resultados Operacionais I&M',
+          validationMsg: 'Erro de acesso ao servidor. Caso persista entre em contacto com Business Intelligence I&M',
           noSearchBtn: false
         });
       }
